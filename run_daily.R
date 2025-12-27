@@ -260,10 +260,12 @@ GamesTrack <- function(HomeTot,HomeSpr){
   
   
   #because whoever makes this is fucking lazy, we need to call match function again
+if(is.na(score_hist[1,6]) == FALSE){
   for(i in 1:length(which(sapply(score_hist$scores,is.null)==FALSE))){
     score_hist$Score.H[i] <- score_hist$scores[[i]][1,2]
     score_hist$Score.A[i] <- score_hist$scores[[i]][2,2]
   }
+}
   
   
   ydscore <- score_hist[,c(1,5,6)]
