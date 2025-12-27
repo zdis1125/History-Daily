@@ -8,7 +8,6 @@ library(oddsapiR)
 library(lubridate)
 library(tibble)
 
-setwd("C:/Users/zdis1/OneDrive - University of Connecticut/CBB/Cbb")
 
 #first pull from kp basically just using PullStats2
 
