@@ -21,8 +21,8 @@ jobs:
 
       - name: Install dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-        cache-version: 1
+        with: 
+          cache-version: 1
           packages: |
             rvest
             fuzzyjoin
