@@ -32,7 +32,6 @@ jobs:
             shiny
             DT
             tibble
-            # Add any other packages you need here
 
         
       - name: Run script
