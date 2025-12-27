@@ -1,3 +1,4 @@
+source("R/match-function.R")
 library(rvest)
 library(fuzzyjoin)
 library(stringr)
@@ -12,8 +13,6 @@ library(bslib)
 library(shiny)
 library(DT)
 library(tibble)
-
-setwd("C:/Users/zdis1/OneDrive - University of Connecticut/CBB/Cbb")
 
 #first pull from kp basically just using PullStats2
 
@@ -57,7 +56,7 @@ for (i in 1:nrow(HomeSpr)){
   HomeSpr <- FandSpr[-(1:nrow(FandSpr)),]
 }
 names(HomeSpr)[names(HomeSpr) == "outcomes_point"] <- "home_spread"
-MatchFunc <- dget("matches.R")
+#MatchFunc <- dget("matches.R")
 #put in vector of oddsapi teams, spits out kenpom team
 
 #HomeTeams <- HomeSpr$home_team
@@ -67,7 +66,7 @@ MatchFunc <- dget("matches.R")
 #change to full_name for function
 names(HomeSpr)[names(HomeSpr) == "home_team"] <- "full_name"
 
-HomeSpr <- MatchFunc(HomeSpr)
+HomeSpr <- Teamtable(HomeSpr)
 
 #and change back to home team
 names(HomeSpr)[names(HomeSpr) == "full_name"] <- "home_team"
@@ -75,7 +74,7 @@ names(HomeSpr)[names(HomeSpr) == "full_name"] <- "home_team"
 #repeat for away
 names(HomeSpr)[names(HomeSpr) == "away_team"] <- "full_name"
 
-HomeSpr <- MatchFunc(HomeSpr)
+HomeSpr <- Teamtable(HomeSpr)
 
 names(HomeSpr)[names(HomeSpr) == "full_name"] <- "away_team"
 
