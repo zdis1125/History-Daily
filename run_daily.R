@@ -329,7 +329,7 @@ for (i in 1:nrow(HomeTot)){
     }
   }
 }
-  GamesTrack(HomeTot,HomeSpr)
+AllGames <- GamesTrack(HomeTot,HomeSpr)
 }else{
  Scores_file <- "HistScores.rds"
  AllGames <- readRDS(Scores_file) 
