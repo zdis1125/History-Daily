@@ -52,16 +52,16 @@ for (i in 1:nrow(HomeSpr)){
 }
 names(HomeSpr)[names(HomeSpr) == "outcomes_point"] <- "home_spread"
 
-#put in vector of oddsapi teams, spits out kenpom team
+#put in vector of oddsapi s, spits out kenpom 
 
-#HomeTeams <- HomeSpr$home_team
+#Homes <- HomeSpr$home_team
 
 #names(HomeTeams) <- 'full_name'
 
 #change to full_name for function
 names(HomeSpr)[names(HomeSpr) == "home_team"] <- "full_name"
 
-HomeSpr <- TeamTable(HomeSpr)
+HomeSpr <- Teamtable(HomeSpr)
 
 #and change back to home team
 names(HomeSpr)[names(HomeSpr) == "full_name"] <- "home_team"
