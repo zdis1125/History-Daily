@@ -316,6 +316,7 @@ if(is.na(score_hist[1,6]) == FALSE){
     
     
   }
+  return(AllGames)
 }
 
 #make sure spread is home teams spread
