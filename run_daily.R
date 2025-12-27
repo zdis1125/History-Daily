@@ -51,7 +51,7 @@ for (i in 1:nrow(HomeSpr)){
   HomeSpr <- FandSpr[-(1:nrow(FandSpr)),]
 }
 names(HomeSpr)[names(HomeSpr) == "outcomes_point"] <- "home_spread"
-MatchFunc <- dget("matches.R")
+
 #put in vector of oddsapi teams, spits out kenpom team
 
 #HomeTeams <- HomeSpr$home_team
@@ -61,7 +61,7 @@ MatchFunc <- dget("matches.R")
 #change to full_name for function
 names(HomeSpr)[names(HomeSpr) == "home_team"] <- "full_name"
 
-HomeSpr <- MatchFunc(HomeSpr)
+HomeSpr <- TeamTable(HomeSpr)
 
 #and change back to home team
 names(HomeSpr)[names(HomeSpr) == "full_name"] <- "home_team"
@@ -69,7 +69,7 @@ names(HomeSpr)[names(HomeSpr) == "full_name"] <- "home_team"
 #repeat for away
 names(HomeSpr)[names(HomeSpr) == "away_team"] <- "full_name"
 
-HomeSpr <- MatchFunc(HomeSpr)
+HomeSpr <- Teamtable(HomeSpr)
 
 names(HomeSpr)[names(HomeSpr) == "full_name"] <- "away_team"
 
@@ -101,7 +101,7 @@ HomeTot <- HomeTot[which(substr(HomeTot$commence_time,1,10)==date),]
 GamesTrack <- function(HomeTot,HomeSpr){
   
   names(HomeTot)[names(HomeTot) == "outcomes_point"] <- "home_total"
-  MatchFunc <- dget("matches.R")
+ 
   #put in vector of oddsapi teams, spits out kenpom team
   
   #HomeTeams <- HomeSpr$home_team
@@ -111,7 +111,7 @@ GamesTrack <- function(HomeTot,HomeSpr){
   #change to full_name for function
   names(HomeTot)[names(HomeTot) == "home_team"] <- "full_name"
   
-  HomeTot <- MatchFunc(HomeTot)
+  HomeTot <- Teamtable(HomeTot)
   
   #and change back to home team
   names(HomeTot)[names(HomeTot) == "full_name"] <- "home_team"
@@ -119,7 +119,7 @@ GamesTrack <- function(HomeTot,HomeSpr){
   #repeat for away
   names(HomeTot)[names(HomeTot) == "away_team"] <- "full_name"
   
-  HomeTot <- MatchFunc(HomeTot)
+  HomeTot <- Teamtable(HomeTot)
   
   names(HomeTot)[names(HomeTot) == "full_name"] <- "away_team"
   
