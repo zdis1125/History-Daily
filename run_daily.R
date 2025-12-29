@@ -220,9 +220,9 @@ GamesTrack <- function(HomeTot,HomeSpr){
   
   # i think we prob need to add combined_stat into a df that doesnt change like an rds file, then we can inner join from yesterday
   
-  #saveRDS(NULL, "HistScores.rds")
+  #saveRDS(NULL, "HistScoresGit.rds")
   
-  Scores_file <- "HistScores.rds"
+  Scores_file <- "HistScoresGit.rds"
   
   #so now we need two things, to build this rds with todays combined stat, then also inner join on toa daysfrom = 1
   
@@ -235,7 +235,7 @@ GamesTrack <- function(HomeTot,HomeSpr){
     AllGames <- rbind(HistGames,combined_stat[notin,])
   }
   
-  #saveRDS(AllGames, "HistScores.rds")
+  #saveRDS(AllGames, "HistScoresGit.rds")
   
   #index for what yesterdays games were
   ydgameindex <- which(AllGames$date == format(Sys.Date()-1, "%Y-%m-%d"))
@@ -332,7 +332,7 @@ for (i in 1:nrow(HomeTot)){
 }
 AllGames <- GamesTrack(HomeTot,HomeSpr)
 }else{
- Scores_file <- "HistScores.rds"
+ Scores_file <- "HistScoresGit.rds"
  AllGames <- readRDS(Scores_file) 
 }
 
@@ -340,7 +340,7 @@ AllGames <- GamesTrack(HomeTot,HomeSpr)
 #AllGames <- AllGames[,1:25]
 
 
-saveRDS(AllGames, "HistScores.rds")
+saveRDS(AllGames, "HistScoresGit.rds")
 
 
 
