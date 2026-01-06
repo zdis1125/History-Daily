@@ -277,7 +277,12 @@ if(is.na(score_hist[1,6]) == FALSE){
   
   HistSc <- HistSc[,1:(ncol(HistSc)-1)]
   
-  AllGames[ydgameindex,] <- HistSc
+  if(length(ydgameindex)==nrow(HistSc)){
+    AllGames[ydgameindex,] <- HistSc
+  } else{
+    tempindex <- which(AllGames[,1] %in% HistSc[,1])
+    AllGames[tempindex,] <- HistSc
+  }
   
   #AllGames <- cbind(AllGames,"Vegas Result")
   
