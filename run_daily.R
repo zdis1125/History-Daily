@@ -247,7 +247,7 @@ GamesTrack <- function(HomeTot,HomeSpr){
   
   #pulls scores from yesterday, if yesterday is two days ago(comes from weird utc timing)
   
-  if(as.numeric(format(Sys.time(), "%H"))>15){
+  if(as.numeric(format(Sys.time(), "%H"))>23){
     score_hist <- toa_sports_scores('basketball_ncaab',days_from = 2)
   }else{
     score_hist <- toa_sports_scores('basketball_ncaab',days_from = 1)
@@ -260,12 +260,12 @@ GamesTrack <- function(HomeTot,HomeSpr){
   
   
   #because whoever makes this is fucking lazy, we need to call match function again
-if(is.na(score_hist[1,6]) == FALSE){
+
   for(i in 1:length(which(sapply(score_hist$scores,is.null)==FALSE))){
     score_hist$Score.H[i] <- score_hist$scores[[i]][1,2]
     score_hist$Score.A[i] <- score_hist$scores[[i]][2,2]
   }
-}
+
   
   
   ydscore <- score_hist[,c(1,5,6)]
