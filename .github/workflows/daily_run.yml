@@ -21,23 +21,21 @@ jobs:
       - name: Install System Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libxml2-dev libcurl4-openssl-dev libssl-dev
+          sudo apt-get install -y libxml2-dev libcurl4-openssl-dev libssl-dev libicu-dev build-essential
 
-      - name: Install packages manually
-        run: |
-          Rscript -e 'install.packages(c("rvest", "fuzzyjoin", "stringr", "dplyr", "jsonlite", "lubridate", "tibble", "remotes"), repos="https://cloud.r-project.org")'
-        
-      - name: Install oddsapiR
+      - name: Install R Packages
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-        run: Rscript -e 'remotes::install_github("sportsdataverse/oddsapiR", upgrade = "never")'
+        run: |
+          Rscript -e 'options(repos = c(CRAN = "https://cloud.r-project.org"))' \
+                  -e 'install.packages(c("remotes", "rvest", "stringr", "dplyr", "jsonlite", "lubridate", "tibble"))' \
+                  -e 'remotes::install_cran("fuzzyjoin", type = "source")' \
+                  -e 'remotes::install_github("sportsdataverse/oddsapiR", upgrade = "never")'
         
       - name: Run script
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: |
-          Rscript -e 'install.packages("fuzzyjoin", repos="https://cloud.r-project.org")'
-          Rscript run_daily.R
+        run: Rscript run_daily.R 
 
       - name: Commit and Push results
         run: |
