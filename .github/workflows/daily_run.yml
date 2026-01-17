@@ -28,10 +28,9 @@ jobs:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
           Rscript -e 'options(repos = c(CRAN = "https://cloud.r-project.org"))' \
-                  -e 'install.packages(c("remotes", "rvest", "stringr", "dplyr", "jsonlite", "lubridate", "tibble"))' \
-                  -e 'remotes::install_cran("fuzzyjoin", type = "source")' \
+                  -e 'install.packages(c("remotes", "rvest", "stringr", "dplyr", "jsonlite", "lubridate", "tibble", "fuzzyjoin"))' \
                   -e 'remotes::install_github("sportsdataverse/oddsapiR", upgrade = "never")'
-        
+
       - name: Run script
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
