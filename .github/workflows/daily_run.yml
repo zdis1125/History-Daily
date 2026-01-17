@@ -20,23 +20,10 @@ jobs:
           r-version: '4.5.2'
           use-public-rspm: true
 
-      - name: Install dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with: 
-          cache-version: 4
-          packages: |
-            rvest
-            fuzzyjoin
-            stringr
-            dplyr
-            jsonlite
-            lubridate
-            tibble
-            remotes
-          # Note: No 'upgrade: true' or extra 'true' lines here to avoid the R error
-
-      - name: Install oddsapiR manually
-        run: Rscript -e 'remotes::install_github("sportsdataverse/oddsapiR")'
+      - name: Install packages manually
+        run: |
+          Rscript -e 'install.packages(c("rvest", "fuzzyjoin", "stringr", "dplyr", "jsonlite", "lubridate", "tibble", "remotes"), repos="https://cloud.r-project.org")'
+          Rscript -e 'remotes::install_github("sportsdataverse/oddsapiR")'
         
       - name: Run script
         env:
