@@ -35,7 +35,9 @@ jobs:
       - name: Run script
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: Rscript run_daily.R 
+        run: |
+          Rscript -e 'install.packages("fuzzyjoin", repos="https://cloud.r-project.org")'
+          Rscript run_daily.R
 
       - name: Commit and Push results
         run: |
