@@ -23,19 +23,20 @@ jobs:
       - name: Install dependencies
         uses: r-lib/actions/setup-r-dependencies@v2
         with: 
-          cache-version: 3
+          cache-version: 4
           packages: |
-            any::rvest
-            any::fuzzyjoin
-            any::stringr
-            any::dplyr
-            any::jsonlite
-            any::lubridate
-            any::tibble
-          extra-packages: |
-            sportsdataverse/oddsapiR
-          # Use the correct input name from the warning message
-          lockfile-create-lib: 'true' 
+            rvest
+            fuzzyjoin
+            stringr
+            dplyr
+            jsonlite
+            lubridate
+            tibble
+            remotes
+          # Note: No 'upgrade: true' or extra 'true' lines here to avoid the R error
+
+      - name: Install oddsapiR manually
+        run: Rscript -e 'remotes::install_github("sportsdataverse/oddsapiR")'
         
       - name: Run script
         env:
