@@ -19,20 +19,19 @@ jobs:
         with:
           use-public-rspm: true
 
-      - name: Install dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with: 
-          cache-version: 1
-          packages: |
-            dplyr
-            stringr
-            tibble
-            lubridate
-            jsonlite
-            rvest
-            fuzzyjoin
-          extra-packages: |
-            sportsdataverse/oddsapiR
+      - name: Install R packages
+        run: |
+          Rscript -e 'install.packages(c(
+          "dplyr",
+          "stringr",
+          "tibble",
+          "lubridate",
+          "jsonlite",
+          "rvest",
+          "fuzzyjoin",
+          "qs"
+          ), repos = "https://cloud.r-project.org")'
+          Rscript -e 'remotes::install_github("sportsdataverse/oddsapiR")'
 
         
       - name: Run script
