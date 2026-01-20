@@ -26,7 +26,7 @@ jobs:
         run: |
           Rscript -e 'options(repos = c(CRAN = "https://cloud.r-project.org"))
           install.packages("remotes")
-          install.packages(c("dplyr", "stringr", "tibble", "lubridate", "jsonlite", "rvest", "fuzzyjoin"))
+          install.packages(c("dplyr", "stringr", "tibble", "lubridate", "jsonlite", "rvest"))
           remotes::install_github("sportsdataverse/oddsapiR", auth_token = NULL)'
 
       - name: Run script
