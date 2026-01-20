@@ -24,21 +24,14 @@ jobs:
         with: 
           cache-version: 1
           packages: |
+            dplyr
+            stringr
+            tibble
+            lubridate
+            jsonlite
             rvest
             fuzzyjoin
-            stringr
-            dplyr
-            jsonlite
-            oddsapiR
-            lubridate
-            tibble
-            any::rvest
-            any::fuzzyjoin
-            any::stringr
-            any::dplyr
-            any::jsonlite
-            any::lubridate
-            any::tibble
+          extra-packages: |
             sportsdataverse/oddsapiR
 
         
