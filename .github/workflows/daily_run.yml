@@ -2,10 +2,8 @@ name: Daily RDS Update
 
 on:
   schedule:
-    # This runs at 00:00 UTC every day. 
-    # Use 'crontab.guru' to change the timing if needed.
-  - cron: '0 12 * * *'
-  workflow_dispatch: # This allows you to run it manually for testing
+    - cron: '0 12 * * *'
+  workflow_dispatch:
 
 jobs:
   autoscrape:
@@ -20,25 +18,23 @@ jobs:
           use-public-rspm: true
           r-version: '4.4.2'
 
+      # FIX 1: Install system dependencies for curl, openssl, and xml
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+
+      # FIX 2: Install 'remotes' first, then the others
       - name: Install R packages
         run: |
-          Rscript -e 'install.packages(c(
-          "dplyr",
-          "stringr",
-          "tibble",
-          "lubridate",
-          "jsonlite",
-          "rvest",
-          "fuzzyjoin",
-          "qs"
-          ), repos = "https://cloud.r-project.org")'
+          Rscript -e 'install.packages("remotes", repos = "https://cloud.r-project.org")'
+          Rscript -e 'install.packages(c("dplyr", "stringr", "tibble", "lubridate", "jsonlite", "rvest", "fuzzyjoin", "qs"), repos = "https://cloud.r-project.org")'
           Rscript -e 'remotes::install_github("sportsdataverse/oddsapiR")'
 
-        
       - name: Run script
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: Rscript run_daily.R # REPLACE with your actual file name
+        run: Rscript run_daily.R
 
       - name: Commit and Push results
         run: |
