@@ -4,6 +4,7 @@ on:
   schedule:
     # This runs at 00:00 UTC every day. 
     # Use 'crontab.guru' to change the timing if needed.
+  - cron: '0 0 * * *'
   - cron: '0 12 * * *'
   workflow_dispatch: # This allows you to run it manually for testing
 
@@ -25,31 +26,6 @@ jobs:
           cache-version: 1
           packages: |
             rvest
-            fuzzyjoin
             stringr
             dplyr
             jsonlite
-            oddsapiR
-            lubridate
-            tibble
-            any::rvest
-            any::stringr
-            any::dplyr
-            any::jsonlite
-            any::lubridate
-            any::tibble
-            sportsdataverse/oddsapiR
-
-        
-      - name: Run script
-        env:
-          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: Rscript run_daily.R # REPLACE with your actual file name
-
-      - name: Commit and Push results
-        run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
-          git add HistScoresGit.rds
-          git commit -m "Daily data update" || echo "No changes to commit"
-          git push
