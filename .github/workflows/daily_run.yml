@@ -25,7 +25,6 @@ jobs:
           cache-version: 1
           packages: |
             rvest
-            fuzzyjoin
             stringr
             dplyr
             jsonlite
