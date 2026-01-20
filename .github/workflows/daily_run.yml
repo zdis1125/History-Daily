@@ -2,8 +2,10 @@ name: Daily RDS Update
 
 on:
   schedule:
-    - cron: '0 12 * * *'
-  workflow_dispatch:
+    # This runs at 00:00 UTC every day. 
+    # Use 'crontab.guru' to change the timing if needed.
+  - cron: '0 12 * * *'
+  workflow_dispatch: # This allows you to run it manually for testing
 
 jobs:
   autoscrape:
@@ -15,24 +17,34 @@ jobs:
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
         with:
-          r-version: '4.4.2'
+          use-public-rspm: true
 
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev libssl-dev libxml2-dev
+      - name: Install dependencies
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with: 
+          cache-version: 1
+          packages: |
+            rvest
+            fuzzyjoin
+            stringr
+            dplyr
+            jsonlite
+            oddsapiR
+            lubridate
+            tibble
+            any::rvest
+            any::stringr
+            any::dplyr
+            any::jsonlite
+            any::lubridate
+            any::tibble
+            sportsdataverse/oddsapiR
 
-      - name: Install R packages
-        run: |
-          Rscript -e 'options(repos = c(CRAN = "https://cloud.r-project.org"))
-          install.packages("remotes")
-          install.packages(c("dplyr", "stringr", "tibble", "lubridate", "jsonlite", "rvest"))
-          remotes::install_github("sportsdataverse/oddsapiR", auth_token = NULL)'
-
+        
       - name: Run script
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: Rscript run_daily.R
+        run: Rscript run_daily.R # REPLACE with your actual file name
 
       - name: Commit and Push results
         run: |
@@ -40,5 +52,4 @@ jobs:
           git config --global user.email "action@github.com"
           git add HistScoresGit.rds
           git commit -m "Daily data update" || echo "No changes to commit"
-          git push
           git push
