@@ -1,6 +1,5 @@
 source("R/match-function.R")
 library(rvest)
-library(fuzzyjoin)
 library(stringr)
 library(dplyr)
 library(jsonlite)
