@@ -22,22 +22,14 @@ jobs:
 
       - name: Install R packages
         run: |
-          Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER")); install.packages(c(
-            "rvest",
-            "stringr",
-            "dplyr",
-            "jsonlite",
-            "oddsapiR",
-            "lubridate",
-            "tibble"
-          ), repos = "https://cloud.r-project.org")'
+          install.packages(c("rvest", "stringr", "dplyr", "jsonlite", "oddsapiR", "lubridate", "tibble"))
+        shell: Rscript {0}
 
-        
       - name: Run script
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: Rscript run_daily.R # REPLACE with your actual file name
-
+        run: Rscript run_daily.R
+        
       - name: Commit and Push results
         run: |
           git config --global user.name "GitHub Action"
