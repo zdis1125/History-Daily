@@ -19,18 +19,17 @@ jobs:
         with:
           use-public-rspm: true
 
-      - name: Install dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with: 
-          cache-version: 1
-          packages: |
-            rvest
-            stringr
-            dplyr
-            jsonlite
-            oddsapiR
-            lubridate
-            tibble
+      - name: Install R packages
+        run: |
+          Rscript -e 'install.packages(c(
+            "rvest",
+            "stringr",
+            "dplyr",
+            "jsonlite",
+            "oddsapiR",
+            "lubridate",
+            "tibble"
+            ), repos = "https://cloud.r-project.org")'
 
         
       - name: Run script
