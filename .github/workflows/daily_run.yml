@@ -17,11 +17,12 @@ jobs:
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
         with:
+          r-version: '4.3'
           use-public-rspm: true
 
       - name: Install R packages
         run: |
-          Rscript -e 'install.packages(c(
+          Rscript -e '.libPaths(Sys.getenv("R_LIBS_USER")); install.packages(c(
             "rvest",
             "stringr",
             "dplyr",
@@ -29,7 +30,7 @@ jobs:
             "oddsapiR",
             "lubridate",
             "tibble"
-            ), repos = "https://cloud.r-project.org")'
+          ), repos = "https://cloud.r-project.org")'
 
         
       - name: Run script
