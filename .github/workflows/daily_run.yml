@@ -22,8 +22,8 @@ jobs:
 
       - name: Install R packages
         run: |
-          install.packages(c("rvest", "stringr", "dplyr", "jsonlite", "oddsapiR", "lubridate", "tibble", "remotes"))
-          remotes::install_github("dgrtwo/fuzzyjoin")
+          install.packages(c("rvest", "stringr", "dplyr", "jsonlite", "oddsapiR", "lubridate", "tibble"))
+          install.packages("https://cran.r-project.org/src/contrib/Archive/fuzzyjoin/fuzzyjoin_0.1.6.1.tar.gz", repos=NULL, type="source")
         shell: Rscript {0}
 
       - name: Run script
