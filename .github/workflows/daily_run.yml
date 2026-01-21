@@ -33,8 +33,7 @@ jobs:
             "jsonlite", 
             "oddsapiR", 
             "lubridate", 
-            "tibble", 
-            "dgrtwo/fuzzyjoin" # This installs it from GitHub directly
+            "tibble"
           ))
         shell: Rscript {0}
 
