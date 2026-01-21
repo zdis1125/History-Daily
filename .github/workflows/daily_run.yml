@@ -22,7 +22,7 @@ jobs:
 
       - name: Install R packages
         run: |
-          install.packages(c("rvest", "stringr", "dplyr", "jsonlite", "oddsapiR", "lubridate", "tibble"))
+          install.packages(c("rvest", "stringr", "dplyr", "jsonlite", "oddsapiR", "lubridate", "tibble","fuzzyjoin"))
         shell: Rscript {0}
 
       - name: Run script
