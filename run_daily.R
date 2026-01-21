@@ -1,4 +1,5 @@
 source("R/match-function.R")
+library(httr)
 library(rvest)
 library(stringr)
 library(dplyr)
@@ -128,10 +129,13 @@ GamesTrack <- function(HomeTot,HomeSpr){
   
   
   
+ url <- "https://kenpom.com/"
   
-  url <- "https://kenpom.com/"
+  # Fetch the page with a "User-Agent" to mimic a real browser
+  response <- GET(url, add_headers(`User-Agent` = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"))
   
-  page <- read_html(url)
+  # Pass the content of that response to read_html
+  page <- read_html(content(response, "text"))
   
   Ranks <- page %>%
     html_nodes(".hard_left") %>%
