@@ -22,8 +22,20 @@ jobs:
 
       - name: Install R packages
         run: |
-          install.packages(c("rvest", "stringr", "dplyr", "jsonlite", "oddsapiR", "lubridate", "tibble"))
-          install.packages("https://cran.r-project.org/src/contrib/Archive/fuzzyjoin/fuzzyjoin_0.1.6.1.tar.gz", repos=NULL, type="source")
+          # 1. Install pak first
+          install.packages("pak", repos = "https://r-lib.github.io/p/pak/dev")
+          
+          # 2. Use pak to install everything (including the archived fuzzyjoin)
+          pak::pkg_install(c(
+            "rvest", 
+            "stringr", 
+            "dplyr", 
+            "jsonlite", 
+            "oddsapiR", 
+            "lubridate", 
+            "tibble", 
+            "dgrtwo/fuzzyjoin" # This installs it from GitHub directly
+          ))
         shell: Rscript {0}
 
       - name: Run script
