@@ -58,6 +58,10 @@ jobs:
           repos = "https://cloud.r-project.org",
           lib = Sys.getenv("R_LIBS_USER")
           )'
+
+      - name: DEBUG — library paths and rvest
+        run: |
+          Rscript -e 'cat("LIB PATHS:\n"); print(.libPaths()); cat("\nINSTALLED:\n"); print(installed.packages()[,1]); library(rvest)'
           
       - name: Run script
         env:
