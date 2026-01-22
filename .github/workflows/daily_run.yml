@@ -4,7 +4,7 @@ on:
   schedule:
     # This runs at 00:00 UTC every day. 
     # Use 'crontab.guru' to change the timing if needed.
-  - cron: '0 0 * * *'
+  - cron: '0 12 * * *'
   workflow_dispatch: # This allows you to run it manually for testing
 
 jobs:
@@ -31,8 +31,7 @@ jobs:
             oddsapiR
             lubridate
             tibble
-
-        
+             
       - name: Run script
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
@@ -42,7 +41,6 @@ jobs:
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add HistScores.rds
           git add HistScoresGit.rds
           git commit -m "Daily data update" || echo "No changes to commit"
           git push
