@@ -19,6 +19,12 @@ jobs:
         with:
           r-version: '4.4.2'
           use-public-rspm: true
+
+      - name: Set R library path
+        run: |
+          echo "R_LIBS_USER=$HOME/R/library" >> $GITHUB_ENV
+          mkdir -p $HOME/R/library
+          
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -29,7 +35,8 @@ jobs:
           Rscript -e 'install.packages(
             "https://cran.r-project.org/src/contrib/Archive/qs/qs_0.25.5.tar.gz",
             repos = NULL,
-            type = "source"
+            type = "source",
+            lib = Sys.getenv("R_LIBS_USER")
           )'
 
       - name: Install R packages
@@ -47,8 +54,11 @@ jobs:
             "shiny",
             "DT",
             "tibble"
-          ), repos = "https://cloud.r-project.org")'  
-            
+          ),
+          repos = "https://cloud.r-project.org",
+          lib = Sys.getenv("R_LIBS_USER")
+          )'
+          
       - name: Run script
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
