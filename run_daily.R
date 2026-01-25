@@ -6,6 +6,8 @@ library(jsonlite)
 library(oddsapiR)
 library(lubridate)
 library(tibble)
+library(httr)
+
 
 
 #first pull from kp basically just using PullStats2
