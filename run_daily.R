@@ -128,9 +128,15 @@ GamesTrack <- function(HomeTot,HomeSpr){
   
   
   
-   url <- "https://kenpom.com/"
-  
-  page <- read_html(url)
+
+  target_url <- "https://kenpom.com/"
+
+  proxy_url <- paste0("http://api.scraperapi.com?api_key=", "0cb854720319f36ef4c5e17a9cf4bd57", "&url=", target_url)
+
+  response <- GET(proxy_url)
+
+  page <- read_html(response)
+
   
   Ranks <- page %>%
     html_nodes(".hard_left") %>%
