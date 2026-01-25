@@ -2,9 +2,7 @@ name: Daily RDS Update
 
 on:
   schedule:
-    # This runs at 00:00 UTC every day. 
-    # Use 'crontab.guru' to change the timing if needed.
-    - cron: '0 12 * * *'
+  - cron: '0 1 * * *'
   workflow_dispatch: # This allows you to run it manually for testing
 
 jobs:
