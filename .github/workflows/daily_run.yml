@@ -2,8 +2,8 @@ name: Daily RDS Update
 
 on:
   schedule:
-  - cron: '0 1 * * *'
-  workflow_dispatch: # This allows you to run it manually for testing
+    - cron: '0 1 * * *'
+  workflow_dispatch:
 
 jobs:
   autoscrape:
@@ -23,6 +23,16 @@ jobs:
           echo "R_LIBS_USER=$HOME/R/library" >> $GITHUB_ENV
           mkdir -p $HOME/R/library
           
+      - name: Cache R packages
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          # The key uses the OS and a hash of this workflow file. 
+          # If you change the list of packages below, the hash changes and forces a fresh install.
+          key: ${{ runner.os }}-r-4.4.2-${{ hashFiles('.github/workflows/*.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-r-4.4.2-
+
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -33,43 +43,20 @@ jobs:
             libcurl4-openssl-dev \
             libssl-dev
 
-      - name: Install qs from CRAN archive
+      - name: Install R packages (if not cached)
+        # This will run even on cache hits to ensure everything is correct, 
+        # but R is smart enough to skip already installed packages.
         run: |
-          Rscript -e 'install.packages(
-            "https://cran.r-project.org/src/contrib/Archive/qs/qs_0.25.5.tar.gz",
-            repos = NULL,
-            type = "source",
-            lib = Sys.getenv("R_LIBS_USER")
-          )'
-
-      - name: Install rvest explicitly
-        run: |
-          Rscript -e 'install.packages(
-            "rvest",
-            repos = "https://cloud.r-project.org",
-            lib = Sys.getenv("R_LIBS_USER")
-          )'
-
-      - name: Install R packages
-        run: |
-          Rscript -e 'install.packages(c(
-            "rvest",
-            "fuzzyjoin",
-            "stringr",
-            "dplyr",
-            "mailR",
-            "jsonlite",
-            "oddsapiR",
-            "lubridate",
-            "bslib",
-            "shiny",
-            "DT",
-            "tibble",
-            "httr"
-          ),
-          repos = "https://cloud.r-project.org",
-          lib = Sys.getenv("R_LIBS_USER")
-          )'
+          Rscript -e '
+            lib <- Sys.getenv("R_LIBS_USER")
+            if (!requireNamespace("qs", quietly = TRUE)) {
+              install.packages("https://cran.r-project.org/src/contrib/Archive/qs/qs_0.25.5.tar.gz", repos = NULL, type = "source", lib = lib)
+            }
+            
+            pkgs <- c("rvest", "fuzzyjoin", "stringr", "dplyr", "mailR", "jsonlite", "oddsapiR", "lubridate", "bslib", "shiny", "DT", "tibble", "httr")
+            new_pkgs <- pkgs[!(pkgs %in% installed.packages(lib.loc = lib)[,"Package"])]
+            if(length(new_pkgs)) install.packages(new_pkgs, repos = "https://cloud.r-project.org", lib = lib)
+          '
 
       - name: DEBUG — library paths and rvest
         run: |
@@ -78,7 +65,7 @@ jobs:
       - name: Run script
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: Rscript run_daily.R # REPLACE with your actual file name
+        run: Rscript run_daily.R
 
       - name: Commit and Push results
         run: |
