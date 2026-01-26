@@ -253,7 +253,7 @@ GamesTrack <- function(HomeTot,HomeSpr){
   
   #pulls scores from yesterday, if yesterday is two days ago(comes from weird utc timing)
   
-  if(as.numeric(format(Sys.time(), "%H"))>23){
+  if(as.numeric(format(with_tz(now(), "America/New_York", "%Y-%m-%d"),"%H"))>=16){
     score_hist <- toa_sports_scores('basketball_ncaab',days_from = 2)
   }else{
     score_hist <- toa_sports_scores('basketball_ncaab',days_from = 1)
