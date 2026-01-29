@@ -354,6 +354,8 @@ AllGames <- GamesTrack(HomeTot,HomeSpr)
 saveRDS(AllGames, "HistScoresGit.rds")
 
 
+#comb stats stuff: 
+
 dat25 <- read.csv("CBB_data.csv", skip = 2)
 dat25 <- dat25[-nrow(dat25), ]
 dat25$AdjO.A <- as.numeric(dat25$AdjO.A)
@@ -403,95 +405,108 @@ AllGameandPred2$MySpread <- AllGameandPred2$PredAway - AllGameandPred2$PredHome
 AllGameandPred2$MyTot <- AllGameandPred2$PredHome + AllGameandPred2$PredAway
 
 
-ID <- vector()
-HitRate <- vector()
-NumPlays <- vector()
+HitRate <- matrix(ncol = 125,nrow = 80)
+NumPlays <- matrix(ncol = 125,nrow = 80)
+ID <- matrix(ncol = 125,nrow = 80)
+for( k in 1:80) {
+  
+    sprmeasure <- k/10
+    for(i in 1:nrow(AllGameandPred2)){
+      AllGameandPred2$SpreadDiscrep[i] <- abs(AllGameandPred2$MySpread[i]- as.numeric(AllGameandPred2$home_spread[i]))
+      if(abs(AllGameandPred2$SpreadDiscrep[i] >=sprmeasure)){
+        if(abs(AllGameandPred2$MySpread[i] + AllGameandPred2$SpreadDiscrep[i]) == abs(as.numeric(AllGameandPred2$home_spread[i]))){
+          AllGameandPred2$SpreadPlay[i] <- "Home Spread"
+        } else if(abs(AllGameandPred2$MySpread[i] - AllGameandPred2$SpreadDiscrep[i]) == abs(as.numeric(AllGameandPred2$home_spread[i]))){
+          AllGameandPred2$SpreadPlay[i] <- "Away Spread" 
+        }else{
+          AllGameandPred2$SpreadPlay[i] <- "Nah" 
+        }
+      }else{
+        AllGameandPred2$SpreadPlay[i] <- "No"
+      }
+      
+      #AllGameandPred2$SpreadAcc[i] <-  as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$home_spread[i])
+      
+      if((as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$home_spread[i])) >= AllGameandPred2$Score.A[i]){
+        if(AllGameandPred2$SpreadPlay[i] == "Away Spread"){
+          AllGameandPred2$SpreadAcc[i] <-  "Miss"
+        }else if(AllGameandPred2$SpreadPlay[i] == "Home Spread"){
+          AllGameandPred2$SpreadAcc[i] <- "Hit"
+        }else{
+          AllGameandPred2$SpreadAcc[i] <- NA
+        }
+      } else if((as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$home_spread[i])) < AllGameandPred2$Score.A[i]){
+        if(AllGameandPred2$SpreadPlay[i] == "Home Spread"){
+          AllGameandPred2$SpreadAcc[i] <-  "Miss"
+        }else if(AllGameandPred2$SpreadPlay[i] == "Away Spread"){
+          AllGameandPred2$SpreadAcc[i] <- "Hit"
+        }else{
+          AllGameandPred2$SpreadAcc[i] <- NA
+        }
+      }
+      
+    }
+    
+    for(j in 1:125){
+    #sets up total play and total accuary
+    for(i in 1:nrow(AllGameandPred2)){
+      totmeasure <- j/10
+      if(AllGameandPred2$home_total[i] - AllGameandPred2$MyTot[i] >= totmeasure){
+        AllGameandPred2$TotalPlay[i] <- "Under"
+      } else if(AllGameandPred2$home_total[i] - AllGameandPred2$MyTot[i] <= -(totmeasure)){
+        AllGameandPred2$TotalPlay[i] <- "Over"
+      } else{
+        AllGameandPred2$TotalPlay[i] <- "No"
+      }
+      
+      #AllGameandPred2$totdiscrep[i] <- abs(AllGameandPred2$home_total[i] - AllGameandPred2$MyTot[i])
+      if((as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$Score.A[i])) >= AllGameandPred2$home_total[i]){
+        if(AllGameandPred2$TotalPlay[i] == "Over"){
+          AllGameandPred2$TotalAcc[i] <-  "Hit"
+        }else if(AllGameandPred2$TotalPlay[i] == "Under"){
+          AllGameandPred2$TotalAcc[i] <- "Miss"
+        }else{
+          AllGameandPred2$TotalAcc[i] <- NA
+        }
+      } else if((as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$Score.A[i])) <= AllGameandPred2$home_total[i]){
+        if(AllGameandPred2$TotalPlay[i] == "Under"){
+          AllGameandPred2$TotalAcc[i] <-  "Hit"
+        }else if(AllGameandPred2$TotalPlay[i] == "Over"){
+          AllGameandPred2$TotalAcc[i] <- "Miss"
+        }else{
+          AllGameandPred2$TotalAcc[i] <- NA
+        }
+      }
+    }
+      TotHit <- length(which(AllGameandPred2$TotalAcc == "Hit"))
+      TotMiss <- length(which(AllGameandPred2$TotalAcc == "Miss"))
+      SprHit <- length(which(AllGameandPred2$SpreadAcc == "Hit"))
+      SprMiss <- length(which(AllGameandPred2$SpreadAcc == "Miss"))
+      
+      HitRate[k,j] <- (TotHit + SprHit) /(TotMiss + SprMiss + TotHit + SprHit)
+      NumPlays[k,j] <- ((TotMiss + SprMiss + TotHit + SprHit))
+      ID[k,j] <- k + j
+    }
+    
 
-for(j in 0:80){
-
-sprmeasure <- as.numeric(j*.1)
-for(i in 1:nrow(AllGameandPred2)){
-  AllGameandPred2$SpreadDiscrep[i] <- abs(AllGameandPred2$MySpread[i]- as.numeric(AllGameandPred2$home_spread[i]))
-  if(abs(AllGameandPred2$SpreadDiscrep[i] >=sprmeasure)){
-    if(abs(AllGameandPred2$MySpread[i] + AllGameandPred2$SpreadDiscrep[i]) == abs(as.numeric(AllGameandPred2$home_spread[i]))){
-      AllGameandPred2$SpreadPlay[i] <- "Home Spread"
-    } else if(abs(AllGameandPred2$MySpread[i] - AllGameandPred2$SpreadDiscrep[i]) == abs(as.numeric(AllGameandPred2$home_spread[i]))){
-      AllGameandPred2$SpreadPlay[i] <- "Away Spread" 
-    }else{
-      AllGameandPred2$SpreadPlay[i] <- "Nah" 
-    }
-  }else{
-    AllGameandPred2$SpreadPlay[i] <- "No"
-  }
-  
-  #AllGameandPred2$SpreadAcc[i] <-  as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$home_spread[i])
-  
-  if((as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$home_spread[i])) >= AllGameandPred2$Score.A[i]){
-    if(AllGameandPred2$SpreadPlay[i] == "Away Spread"){
-      AllGameandPred2$SpreadAcc[i] <-  "Miss"
-    }else if(AllGameandPred2$SpreadPlay[i] == "Home Spread"){
-      AllGameandPred2$SpreadAcc[i] <- "Hit"
-    }else{
-      AllGameandPred2$SpreadAcc[i] <- NA
-    }
-  } else if((as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$home_spread[i])) <= AllGameandPred2$Score.A[i]){
-    if(AllGameandPred2$SpreadPlay[i] == "Home Spread"){
-      AllGameandPred2$SpreadAcc[i] <-  "Miss"
-    }else if(AllGameandPred2$SpreadPlay[i] == "Away Spread"){
-      AllGameandPred2$SpreadAcc[i] <- "Hit"
-    }else{
-      AllGameandPred2$SpreadAcc[i] <- NA
-    }
-  }
-  
 }
 
 
-#sets up total play and total accuary
-for(i in 1:nrow(AllGameandPred2)){
-  totmeasure <- 8.5
-  if(AllGameandPred2$home_total[i] - AllGameandPred2$MyTot[i] >= totmeasure){
-    AllGameandPred2$TotalPlay[i] <- "Under"
-  } else if(AllGameandPred2$home_total[i] - AllGameandPred2$MyTot[i] <= -(totmeasure)){
-    AllGameandPred2$TotalPlay[i] <- "Over"
-  } else{
-    AllGameandPred2$TotalPlay[i] <- "No"
+
+fundval <- matrix(nrow = 80,ncol = 125)
+i <- 1
+for(i in 1:80){
+  for(l in 1:125){
+    fundval[i,l] <- 10 * HitRate[i,l] * NumPlays[i,l] - 11 * NumPlays[i,l] * (1- HitRate[i,l])
   }
+}
+
+
+saveRDS(as.data.frame(HitRate), "HitRate_Grid.rds")
   
-  #AllGameandPred2$totdiscrep[i] <- abs(AllGameandPred2$home_total[i] - AllGameandPred2$MyTot[i])
-  if((as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$Score.A[i])) >= AllGameandPred2$home_total[i]){
-    if(AllGameandPred2$TotalPlay[i] == "Over"){
-      AllGameandPred2$TotalAcc[i] <-  "Hit"
-    }else if(AllGameandPred2$TotalPlay[i] == "Under"){
-      AllGameandPred2$TotalAcc[i] <- "Miss"
-    }else{
-      AllGameandPred2$TotalAcc[i] <- NA
-    }
-  } else if((as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$Score.A[i])) <= AllGameandPred2$home_total[i]){
-    if(AllGameandPred2$TotalPlay[i] == "Under"){
-      AllGameandPred2$TotalAcc[i] <-  "Hit"
-    }else if(AllGameandPred2$TotalPlay[i] == "Over"){
-      AllGameandPred2$TotalAcc[i] <- "Miss"
-    }else{
-      AllGameandPred2$TotalAcc[i] <- NA
-    }
-  }
-}
+saveRDS(as.data.frame(fundval), "FundVal_Grid.rds")
+
+saveRDS(as.data.frame(NumPlays), "NumPlays_Grid.rds")
 
 
-TotHit <- length(which(AllGameandPred2$TotalAcc == "Hit"))
-TotMiss <- length(which(AllGameandPred2$TotalAcc == "Miss"))
-SprHit <- length(which(AllGameandPred2$SpreadAcc == "Hit"))
-SprMiss <- length(which(AllGameandPred2$SpreadAcc == "Miss"))
 
-HitRate[j] <- (TotHit + SprHit) /(TotMiss + SprMiss + TotHit + SprHit)
-NumPlays[j] <- ((TotMiss + SprMiss + TotHit + SprHit))
-ID[j] <- j
-
-
-#CombStats$ID[i] <- i 
-#CombStats$HitRate[i] <- HitRate
-#CombStats$NumPlays[i] <- NumPlays
-}
-CombStats <- as.data.frame(cbind(ID,HitRate,NumPlays))
-saveRDS(CombStats, "SprStats.rds")
