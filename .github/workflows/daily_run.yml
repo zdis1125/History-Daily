@@ -76,4 +76,5 @@ jobs:
           git add FundVal_Grid.rds
           git add NumPlays_Grid.rds
           git commit -m "Daily data update" || echo "No changes to commit"
+          git pull --rebase origin main
           git push
