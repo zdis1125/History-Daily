@@ -133,7 +133,7 @@ GamesTrack <- function(HomeTot,HomeSpr){
 
   target_url <- "https://kenpom.com/"
 
-  proxy_url <- paste0("http://api.scraperapi.com?api_key=", "0cb854720319f36ef4c5e17a9cf4bd57", "&url=", target_url)
+  proxy_url <- paste0("http://api.scraperapi.com?api_key=", "4782746b0f0f75bf8c405c587b572cce", "&url=", target_url)
 
   response <- GET(proxy_url)
 
