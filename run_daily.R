@@ -431,7 +431,7 @@ AllGameandPred <- PredScore(AllGames)
 FlipGameandPred <- FlipPredScore(AllGames)
 
 #remove for Non Con, this averages the normal and flipped predictions for a non con estimate
-for(i in 1:nrow(AllGameandPred){
+for(i in 1:nrow(AllGameandPred)){
 AllGameandPred$PredHome[i] <- (AllGameandPred$PredHome[i] + FlipGameandPred$PredHome[i]) / 2
 AllGameandPred$PredAway[i] <- (AllGameandPred$PredAway[i] + FlipGameandPred$PredAway[i]) / 2
 }
