@@ -229,10 +229,16 @@ GamesTrack <- function(HomeTot,HomeSpr){
   #saveRDS(NULL, "HistScoresGit.rds")
   
   Scores_file <- "HistScoresGit.rds"
+
+  #remove for regular games
+  NCScores_file <- "NCHistScoresGit.rds"
   
   #so now we need two things, to build this rds with todays combined stat, then also inner join on toa daysfrom = 1
   
   HistGames <- readRDS(Scores_file)
+
+  #remove for regular season
+  HistGames <- readRDS(NCScores_file)
   
   if (length(HistGames$date == date) == nrow(combined_stat)){
     AllGames <- HistGames
@@ -345,13 +351,17 @@ AllGames <- GamesTrack(HomeTot,HomeSpr)
 }else{
  Scores_file <- "HistScoresGit.rds"
  AllGames <- readRDS(Scores_file) 
+#remove the following two lines for regular games
+ NCScores_file <- "NCHistScoresGit.rds"
+ AllGames <-readRDS(NCScores_file)
 }
 
 
 #AllGames <- AllGames[,1:25]
 
-
-saveRDS(AllGames, "HistScoresGit.rds")
+#for regular games:
+#saveRDS(AllGames, "HistScoresGit.rds")
+saveRDS(AllGames, "NCHistScoresGit.rds")
 
 
 #comb stats stuff: 
@@ -502,11 +512,17 @@ for(i in 1:80){
 }
 
 
-saveRDS(as.data.frame(HitRate), "HitRate_Grid.rds")
+#saveRDS(as.data.frame(HitRate), "HitRate_Grid.rds")
   
-saveRDS(as.data.frame(fundval), "FundVal_Grid.rds")
+#saveRDS(as.data.frame(fundval), "FundVal_Grid.rds")
 
-saveRDS(as.data.frame(NumPlays), "NumPlays_Grid.rds")
+#saveRDS(as.data.frame(NumPlays), "NumPlays_Grid.rds")
 
 
+#remove the following three and uncomment the above three for regular games:
 
+saveRDS(as.data.frame(HitRate), "NCHitRate_Grid.rds")
+  
+saveRDS(as.data.frame(fundval), "NCFundVal_Grid.rds")
+
+saveRDS(as.data.frame(NumPlays), "NCNumPlays_Grid.rds")
