@@ -363,6 +363,8 @@ AllGames <- GamesTrack(HomeTot,HomeSpr)
 #saveRDS(AllGames, "HistScoresGit.rds")
 saveRDS(AllGames, "NCHistScoresGit.rds")
 
+#this is our actual model predictions now, after we have saved our file, remember git is only used to create the big matrix, actual predictions happen in our app
+#the daily run just puts scores on top of eachother
 
 #comb stats stuff: 
 
@@ -404,8 +406,35 @@ PredScore <- function(GamesHist){
   return(GamesHist)
 }
 
+#Flipped predictions, for non conference, remember this just flips the models, home now uses away model, but is still a home prediction
+FlipPredScore <- function(GamesHist){
+  GamesHist$PredHome <- NA
+  GamesHist$PredAway <- NA
+  NonNA <- which(is.na(GamesHist$Score.H) == FALSE)
+  for(i in NonNA){
+    new_game = data.frame( AdjO.A = as.numeric(GamesHist$AdjO.A[i]),
+                           AdjD.A = as.numeric(GamesHist$AdjD.A[i]),
+                           AdjT.A = as.numeric(GamesHist$AdjT.A[i]),
+                           AdjO.H = as.numeric(GamesHist$AdjO.H[i]),
+                           AdjD.H = as.numeric(GamesHist$AdjD.H[i]),
+                           AdjT.H = as.numeric(GamesHist$AdjT.H[i])
+    )
+    GamesHist$PredHome[i] <- round(predict(AwayPred, new_game),1)
+    GamesHist$PredAway[i] <- round(predict(HomePred, new_game),1)
+  }
+  return(GamesHist)
+}
+
 #all games, some dont have scores 
 AllGameandPred <- PredScore(AllGames)
+
+FlipGameandPred <- FlipPredScore(AllGames)
+
+#remove for Non Con, this averages the normal and flipped predictions for a non con estimate
+for(i in 1:nrow(AllGameandPred){
+AllGameandPred$PredHome[i] <- (AllGameandPred$PredHome[i] + FlipGameandPred$PredHome[i]) / 2
+AllGameandPred$PredAway[i] <- (AllGameandPred$PredAway[i] + FlipGameandPred$PredAway[i]) / 2
+}
 
 
 #AllGame andPred2 has all the games and predictions with a score that was tracked
