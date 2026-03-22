@@ -149,6 +149,7 @@ GamesTrack <- function(HomeTot,HomeSpr){
     html_text()
   
   Teams <- Teams[Teams != "" & Teams != "Team"]
+  Teams <- sub("\\s+\\d+$", "", Teams)
   Ranks <- Ranks[Ranks != "" & Ranks != "Rk"]
   
   
