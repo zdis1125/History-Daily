@@ -232,14 +232,14 @@ GamesTrack <- function(HomeTot,HomeSpr){
   Scores_file <- "HistScoresGit.rds"
 
   #remove for regular games
-  NCScores_file <- "NCHistScoresGit.rds"
+  #NCScores_file <- "NCHistScoresGit.rds"
   
   #so now we need two things, to build this rds with todays combined stat, then also inner join on toa daysfrom = 1
   
   HistGames <- readRDS(Scores_file)
 
   #remove for regular season
-  HistGames <- readRDS(NCScores_file)
+  #HistGames <- readRDS(NCScores_file)
   
   if (length(HistGames$date == date) == nrow(combined_stat)){
     AllGames <- HistGames
@@ -361,8 +361,8 @@ AllGames <- GamesTrack(HomeTot,HomeSpr)
 #AllGames <- AllGames[,1:25]
 
 #for regular games:
-#saveRDS(AllGames, "HistScoresGit.rds")
-saveRDS(AllGames, "NCHistScoresGit.rds")
+saveRDS(AllGames, "HistScoresGit.rds")
+#saveRDS(AllGames, "NCHistScoresGit.rds")
 
 #this is our actual model predictions now, after we have saved our file, remember git is only used to create the big matrix, actual predictions happen in our app
 #the daily run just puts scores on top of eachother
@@ -432,10 +432,10 @@ AllGameandPred <- PredScore(AllGames)
 FlipGameandPred <- FlipPredScore(AllGames)
 
 #remove for Non Con, this averages the normal and flipped predictions for a non con estimate
-for(i in 1:nrow(AllGameandPred)){
-AllGameandPred$PredHome[i] <- (AllGameandPred$PredHome[i] + FlipGameandPred$PredHome[i]) / 2
-AllGameandPred$PredAway[i] <- (AllGameandPred$PredAway[i] + FlipGameandPred$PredAway[i]) / 2
-}
+#for(i in 1:nrow(AllGameandPred)){
+#AllGameandPred$PredHome[i] <- (AllGameandPred$PredHome[i] + FlipGameandPred$PredHome[i]) / 2
+#AllGameandPred$PredAway[i] <- (AllGameandPred$PredAway[i] + FlipGameandPred$PredAway[i]) / 2
+#}
 
 
 #AllGame andPred2 has all the games and predictions with a score that was tracked
