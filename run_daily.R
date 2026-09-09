@@ -542,17 +542,17 @@ for(i in 1:80){
 }
 
 
-#saveRDS(as.data.frame(HitRate), "HitRate_Grid.rds")
+saveRDS(as.data.frame(HitRate), "HitRate_Grid.rds")
   
-#saveRDS(as.data.frame(fundval), "FundVal_Grid.rds")
+saveRDS(as.data.frame(fundval), "FundVal_Grid.rds")
 
-#saveRDS(as.data.frame(NumPlays), "NumPlays_Grid.rds")
+saveRDS(as.data.frame(NumPlays), "NumPlays_Grid.rds")
 
 
 #remove the following three and uncomment the above three for regular games:
 
-saveRDS(as.data.frame(HitRate), "NCHitRate_Grid.rds")
+#saveRDS(as.data.frame(HitRate), "NCHitRate_Grid.rds")
   
-saveRDS(as.data.frame(fundval), "NCFundVal_Grid.rds")
+#saveRDS(as.data.frame(fundval), "NCFundVal_Grid.rds")
 
-saveRDS(as.data.frame(NumPlays), "NCNumPlays_Grid.rds")
+#saveRDS(as.data.frame(NumPlays), "NCNumPlays_Grid.rds")
