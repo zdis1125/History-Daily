@@ -353,8 +353,8 @@ AllGames <- GamesTrack(HomeTot,HomeSpr)
  Scores_file <- "HistScoresGit.rds"
  AllGames <- readRDS(Scores_file) 
 #remove the following two lines for regular games
- NCScores_file <- "NCHistScoresGit.rds"
- AllGames <-readRDS(NCScores_file)
+ #NCScores_file <- "NCHistScoresGit.rds"
+ #AllGames <-readRDS(NCScores_file)
 }
 
 
