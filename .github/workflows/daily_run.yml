@@ -53,7 +53,7 @@ jobs:
               install.packages("https://cran.r-project.org/src/contrib/Archive/qs/qs_0.25.5.tar.gz", repos = NULL, type = "source", lib = lib)
             }
             
-            pkgs <- c("rvest", "fuzzyjoin", "stringr", "dplyr", "mailR", "jsonlite", "oddsapiR", "lubridate", "bslib", "shiny", "DT", "tibble", "httr")
+            pkgs <- c("randomForest","e1071","rvest", "fuzzyjoin", "stringr", "dplyr", "mailR", "jsonlite", "oddsapiR", "lubridate", "bslib", "shiny", "DT", "tibble", "httr")
             new_pkgs <- pkgs[!(pkgs %in% installed.packages(lib.loc = lib)[,"Package"])]
             if(length(new_pkgs)) install.packages(new_pkgs, repos = "https://cloud.r-project.org", lib = lib)
           '
