@@ -7,6 +7,9 @@ dat25$AdjT.H <- as.numeric(dat25$AdjT.H)
 dat25$AdjO.H <- as.numeric(dat25$AdjO.H)
 dat25$AdjD.H <- as.numeric(dat25$AdjD.H)
 
+Scores_file <- "HistScoresGit.rds"
+AllGames <- readRDS(Scores_file)
+
 names(dat25)
 fit1 <- lm(score ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H, data = dat25)
 
