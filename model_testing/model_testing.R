@@ -32,13 +32,14 @@ model_formulaA = score ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 model_formulaH = score.1 ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 
 model_list <- list(
-  Linear_Regression = function(f, data) lm(f, data = data),
-  Random_Forest     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
+  #Linear_Regression = function(f, data) lm(f, data = data),
+  #Random_Forest     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
   #Support_Vector    = function(f, data) svm(f, data = data, cost = 10, gamma = 0.1),
   #SVM_Radial        = function(f, data) svm(f, data = data, kernel = "radial", cost = 10),
-  glm_Gam_log               = function(f, data) glm(f, data = data, family = Gamma(link = "log")),
-  glm_Gam_ident              = function(f, data) glm(f, data = data, family = Gamma(link = "identity")),
-  glm_Gau_log               = function(f, data) glm(f, data = data, family = Gaussian(link = "log"))
+  gbm = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01)
+  #glm_Gam_log               = function(f, data) glm(f, data = data, family = Gamma(link = "log")),
+  #glm_Gam_ident              = function(f, data) glm(f, data = data, family = Gamma(link = "identity")),
+  #glm_Gau_log               = function(f, data) glm(f, data = data, family = Gaussian(link = "log"))
 )
 
 for (model_name in names(model_list)) {
