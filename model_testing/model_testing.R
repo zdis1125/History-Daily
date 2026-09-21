@@ -33,10 +33,10 @@ model_formulaH = score.1 ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 
 model_list <- list(
   Linear_Regression = function(f, data) lm(f, data = data),
-  #Random_Forest     = function(f, data) randomForest(f, data = data, ntree = 5000, mtry = 3),
-  Support_Vector    = function(f, data) svm(f, data = data, cost = 10, gamma = 0.1)
+  Random_Forest     = function(f, data) randomForest(f, data = data, ntree = 5000, mtry = 3),
+  #Support_Vector    = function(f, data) svm(f, data = data, cost = 10, gamma = 0.1),
   #SVM_Radial        = function(f, data) svm(f, data = data, kernel = "radial", cost = 10),
-  #glm               = function(f, data) glm(f, data = data, family = Gamma(link = "log"))
+  glm               = function(f, data) glm(f, data = data, family = Gamma(link = "log"))
 )
 
 for (model_name in names(model_list)) {
