@@ -132,7 +132,7 @@ for (model_name in names(model_list)) {
   }
   
   # Save grids for this specific model
-  saveRDS(as.data.frame(HitRate), paste0(model_name, "_HitRate_Grid.rds"))
-  saveRDS(as.data.frame(fundval), paste0(model_name, "_FundVal_Grid.rds"))
-  saveRDS(as.data.frame(NumPlays), paste0(model_name, "_NumPlays_Grid.rds"))
+  saveRDS(as.data.frame(HitRate), paste0("model_testing/",model_name, "_HitRate_Grid.rds"))
+  saveRDS(as.data.frame(fundval), paste0("model_testing/",model_name, "_FundVal_Grid.rds"))
+  saveRDS(as.data.frame(NumPlays), paste0("model_testing/",model_name, "_NumPlays_Grid.rds"))
 }
