@@ -33,10 +33,12 @@ model_formulaH = score.1 ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 
 model_list <- list(
   Linear_Regression = function(f, data) lm(f, data = data),
-  Random_Forest     = function(f, data) randomForest(f, data = data, ntree = 5000, mtry = 3),
+  Random_Forest     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
   #Support_Vector    = function(f, data) svm(f, data = data, cost = 10, gamma = 0.1),
   #SVM_Radial        = function(f, data) svm(f, data = data, kernel = "radial", cost = 10),
-  glm               = function(f, data) glm(f, data = data, family = Gamma(link = "log"))
+  glm_Gam_log               = function(f, data) glm(f, data = data, family = Gamma(link = "log")),
+  glm_Gam_ident              = function(f, data) glm(f, data = data, family = Gamma(link = "identity")),
+  glm_Gau_log               = function(f, data) glm(f, data = data, family = Gaussian(link = "log"))
 )
 
 for (model_name in names(model_list)) {
@@ -54,8 +56,19 @@ for (model_name in names(model_list)) {
     
     # Vectorized prediction is much faster than row-by-row. 
     # type="response" ensures GLM predictions are returned as actual scores, not log values.
-    GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, ], type = "response"), 1)
-    GamesHist$PredAway[NonNA] <- round(predict(AwayPred, newdata = GamesHist[NonNA, ], type = "response"), 1)
+    # Check if the current model in the loop is a GBM
+    if(grepl("gbm", model_name)) {
+      # gbm requires n.trees for prediction
+      GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, ], n.trees = HomePred$n.trees, type = "response"), 1)
+      GamesHist$PredAway[NonNA] <- round(predict(AwayPred, newdata = GamesHist[NonNA, ], n.trees = AwayPred$n.trees, type = "response"), 1)
+    } else {
+      # Standard prediction for lm, glm, randomForest, svm
+      GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, ], type = "response"), 1)
+      GamesHist$PredAway[NonNA] <- round(predict(AwayPred, newdata = GamesHist[NonNA, ], type = "response"), 1)
+    }
+    
+    #GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, ], type = "response"), 1)
+    #GamesHist$PredAway[NonNA] <- round(predict(AwayPred, newdata = GamesHist[NonNA, ], type = "response"), 1)
     
     return(GamesHist)
   }
