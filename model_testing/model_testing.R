@@ -63,71 +63,122 @@ for (model_name in names(model_list)) {
   AllGameandPred <- PredScore(AllGames)
   
   # Filter out games without predictions
-  AllGameandPred2 <- AllGameandPred[!is.na(AllGameandPred$PredAway), ]
-  
-  AllGameandPred2$MySpread <- AllGameandPred2$PredAway - AllGameandPred2$PredHome
-  AllGameandPred2$MyTot <- AllGameandPred2$PredHome + AllGameandPred2$PredAway
-  
-  # --- REQUIRED PRE-CALCULATIONS FOR VECTORIZED LOOP ---
-  AllGameandPred2$home_spread <- as.numeric(AllGameandPred2$home_spread)
-  AllGameandPred2$Score.H <- as.numeric(AllGameandPred2$Score.H)
-  AllGameandPred2$Score.A <- as.numeric(AllGameandPred2$Score.A)
-  
-  AllGameandPred2$SpreadDiscrep <- abs(AllGameandPred2$MySpread - AllGameandPred2$home_spread)
-  home_covered <- (AllGameandPred2$Score.H + AllGameandPred2$home_spread) >= AllGameandPred2$Score.A
-  away_covered <- (AllGameandPred2$Score.H + AllGameandPred2$home_spread) < AllGameandPred2$Score.A
-  
-  HitRate <- matrix(ncol = 125, nrow = 80)
-  NumPlays <- matrix(ncol = 125, nrow = 80)
-  ID <- matrix(ncol = 125, nrow = 80)
-  
-  for( k in 1:80) {
-    sprmeasure <- k/10
-    
-    is_home_play <- round(abs(AllGameandPred2$MySpread + AllGameandPred2$SpreadDiscrep), 4) == round(abs(AllGameandPred2$home_spread), 4)
-    is_away_play <- round(abs(AllGameandPred2$MySpread - AllGameandPred2$SpreadDiscrep), 4) == round(abs(AllGameandPred2$home_spread), 4)
-    
-    AllGameandPred2$SpreadPlay <- ifelse(AllGameandPred2$SpreadDiscrep >= sprmeasure,
-                                         ifelse(is_home_play, "Home Spread",
-                                                ifelse(is_away_play, "Away Spread", "Nah")),
-                                         "No")
-    
-    AllGameandPred2$SpreadAcc <- ifelse(home_covered & AllGameandPred2$SpreadPlay == "Home Spread", "Hit",
-                                        ifelse(home_covered & AllGameandPred2$SpreadPlay == "Away Spread", "Miss",
-                                               ifelse(away_covered & AllGameandPred2$SpreadPlay == "Away Spread", "Hit",
-                                                      ifelse(away_covered & AllGameandPred2$SpreadPlay == "Home Spread", "Miss", NA))))
-    
-    for(j in 1:125){
-      totmeasure <- j/10
-      
-      diff_tot <- AllGameandPred2$home_total - AllGameandPred2$MyTot
-      
-      AllGameandPred2$TotalPlay <- ifelse(diff_tot >= totmeasure, "Under",
-                                          ifelse(diff_tot <= -totmeasure, "Over", "No"))
-      
-      actual_tot <- AllGameandPred2$Score.H + AllGameandPred2$Score.A
-      
-      AllGameandPred2$TotalAcc <- ifelse(actual_tot >= AllGameandPred2$home_total & AllGameandPred2$TotalPlay == "Over", "Hit",
-                                         ifelse(actual_tot <= AllGameandPred2$home_total & AllGameandPred2$TotalPlay == "Under", "Hit",
-                                                ifelse(AllGameandPred2$TotalPlay %in% c("Over", "Under"), "Miss", NA)))
-      
-      # Tally Results
+    # Keep games with both predictions and both final scores
+  AllGameandPred2 <- AllGameandPred[
+    complete.cases(
+      AllGameandPred[, c("PredHome", "PredAway", "Score.H", "Score.A")]
+    ),
+    , drop = FALSE
+  ]
+
+  AllGameandPred2$MySpread <- round(
+    AllGameandPred2$PredAway - AllGameandPred2$PredHome, 1
+  )
+
+  AllGameandPred2$MyTot <- round(
+    AllGameandPred2$PredHome + AllGameandPred2$PredAway, 1
+  )
+
+  # Positive spread edge = Home; negative = Away
+  AllGameandPred2$SpreadEdge <- round(
+    AllGameandPred2$home_spread - AllGameandPred2$MySpread, 1
+  )
+
+  AllGameandPred2$SpreadDiscrep <- abs(AllGameandPred2$SpreadEdge)
+
+  # Positive total edge = Over; negative = Under
+  AllGameandPred2$TotalEdge <- round(
+    AllGameandPred2$MyTot - AllGameandPred2$home_total, 1
+  )
+
+  # Positive margins mean Home covered / total went Over
+  spread_margin <- AllGameandPred2$Score.H +
+    AllGameandPred2$home_spread - AllGameandPred2$Score.A
+
+  total_margin <- AllGameandPred2$Score.H +
+    AllGameandPred2$Score.A - AllGameandPred2$home_total
+
+  # Grade the margin from the selected side's perspective
+  grade_pick <- function(selected, margin) {
+    result <- rep(NA_character_, length(margin))
+    valid <- selected & is.finite(margin)
+
+    result[valid] <- ifelse(
+      abs(margin[valid]) < 1e-8,
+      "Push",
+      ifelse(margin[valid] >= 0, "Hit", "Miss")
+    )
+
+    result
+  }
+
+  HitRate <- matrix(NA_real_, nrow = 80, ncol = 125)
+  NumPlays <- matrix(0, nrow = 80, ncol = 125)
+  ID <- matrix(0, nrow = 80, ncol = 125)
+  fundval <- matrix(0, nrow = 80, ncol = 125)
+
+  for (k in 1:80) {
+    sprmeasure <- k / 10
+
+    # Strictly greater than the spread threshold
+    spread_selected <- is.finite(AllGameandPred2$SpreadEdge) &
+      AllGameandPred2$SpreadDiscrep >= sprmeasure
+
+    AllGameandPred2$SpreadPlay <- ifelse(
+      spread_selected,
+      ifelse(AllGameandPred2$SpreadEdge >= 0,
+             "Home Spread", "Away Spread"),
+      "No"
+    )
+
+    # Multiply by the edge's sign to grade the chosen side
+    AllGameandPred2$SpreadAcc <- grade_pick(
+      spread_selected,
+      spread_margin * sign(AllGameandPred2$SpreadEdge)
+    )
+
+    SprHit <- sum(AllGameandPred2$SpreadAcc == "Hit", na.rm = TRUE)
+    SprMiss <- sum(AllGameandPred2$SpreadAcc == "Miss", na.rm = TRUE)
+
+    for (j in 1:125) {
+      totmeasure <- j / 10
+
+      # Strictly greater than the total threshold
+      total_selected <- is.finite(AllGameandPred2$TotalEdge) &
+        abs(AllGameandPred2$TotalEdge) >= totmeasure
+
+      AllGameandPred2$TotalPlay <- ifelse(
+        total_selected,
+        ifelse(AllGameandPred2$TotalEdge >= 0, "Over", "Under"),
+        "No"
+      )
+
+      AllGameandPred2$TotalAcc <- grade_pick(
+        total_selected,
+        total_margin * sign(AllGameandPred2$TotalEdge)
+      )
+
       TotHit <- sum(AllGameandPred2$TotalAcc == "Hit", na.rm = TRUE)
       TotMiss <- sum(AllGameandPred2$TotalAcc == "Miss", na.rm = TRUE)
-      SprHit <- sum(AllGameandPred2$SpreadAcc == "Hit", na.rm = TRUE)
-      SprMiss <- sum(AllGameandPred2$SpreadAcc == "Miss", na.rm = TRUE)
-      
-      HitRate[k,j] <- (TotHit + SprHit) / (TotMiss + SprMiss + TotHit + SprHit)
-      NumPlays[k,j] <- (TotMiss + SprMiss + TotHit + SprHit)
-      ID[k,j] <- k + j
-    }
-  }
-  
-  # Fundamental Value Calculation (-110 odds assumption)
-  fundval <- matrix(nrow = 80, ncol = 125)
-  for(i in 1:80){
-    for(l in 1:125){
-      fundval[i,l] <- 10 * HitRate[i,l] * NumPlays[i,l] - 11 * NumPlays[i,l] * (1 - HitRate[i,l])
+
+      wins <- SprHit + TotHit
+      losses <- SprMiss + TotMiss
+
+      # Preserve your original definition: wins + losses
+      # Pushes are excluded from play count and hit rate
+      NumPlays[k, j] <- wins + losses
+
+      HitRate[k, j] <- if (wins + losses > 0) {
+        wins / (wins + losses)
+      } else {
+        NA_real_
+      }
+
+      ID[k, j] <- k + j
+
+      # Preserve your original fund-value scale
+      # +10 per win, -11 per loss, 0 per push
+      fundval[k, j] <- 10 * wins - 11 * losses
     }
   }
   
