@@ -14,6 +14,20 @@ dat25$AdjD.H <- as.numeric(dat25$AdjD.H)
 Scores_file <- "HistScoresGit.rds"
 AllGames <- readRDS(Scores_file)
 
+# Convert prediction variables to numeric so they match the dat25 fit
+AllGames$AdjO.A <- as.numeric(AllGames$AdjO.A)
+AllGames$AdjD.A <- as.numeric(AllGames$AdjD.A)
+AllGames$AdjT.A <- as.numeric(AllGames$AdjT.A)
+AllGames$AdjO.H <- as.numeric(AllGames$AdjO.H)
+AllGames$AdjD.H <- as.numeric(AllGames$AdjD.H)
+AllGames$AdjT.H <- as.numeric(AllGames$AdjT.H)
+
+# Convert scores and Vegas lines to numeric for the accuracy loop
+AllGames$Score.H <- as.numeric(AllGames$Score.H)
+AllGames$Score.A <- as.numeric(AllGames$Score.A)
+AllGames$home_spread <- as.numeric(AllGames$home_spread)
+AllGames$home_total <- as.numeric(AllGames$home_total)
+
 model_formulaA = score ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 model_formulaH = score.1 ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 
