@@ -18,10 +18,10 @@ model_list <- list(
   Random_Forest     = function(f, data) randomForest(f, data = data, ntree = 5000, mtry = 3),
   Support_Vector    = function(f, data) svm(f, data = data,cost = 10, gamma = 0.1),
   SVM_Radial = function(f, data) svm(f, data = data, kernel = "radial", cost = 10),
-  gbm1 = function(f,data) gbm(f,data=data,n.trees = 10000,interaction.depth = 1, shrinkage = 0.01),
-  gbm2 = function(f,data) gbm(f,data=data,n.trees = 15000,interaction.depth = 1, shrinkage = 0.01),
-  gbm3 = function(f,data) gbm(f,data=data,n.trees = 20000,interaction.depth = 1, shrinkage = 0.01),
-  gbm4 = function(f,data) gbm(f,data=data,n.trees = 5000,interaction.depth = 1, shrinkage = 0.01),
+  #gbm1 = function(f,data) gbm(f,data=data,n.trees = 10000,interaction.depth = 1, shrinkage = 0.01),
+  #gbm2 = function(f,data) gbm(f,data=data,n.trees = 15000,interaction.depth = 1, shrinkage = 0.01),
+  #gbm3 = function(f,data) gbm(f,data=data,n.trees = 20000,interaction.depth = 1, shrinkage = 0.01),
+  #gbm4 = function(f,data) gbm(f,data=data,n.trees = 5000,interaction.depth = 1, shrinkage = 0.01),
   glm = function(f,data) glm(f, data = data, family = Gamma(link = "log")),
 )
 
@@ -85,74 +85,53 @@ for (model_name in names(model_list)) {
   ID <- matrix(ncol = 125,nrow = 80)
   for( k in 1:80) {
     
-      sprmeasure <- k/10
-      for(i in 1:nrow(AllGameandPred2)){
-        AllGameandPred2$SpreadDiscrep[i] <- abs(AllGameandPred2$MySpread[i]- as.numeric(AllGameandPred2$home_spread[i]))
-        if(abs(AllGameandPred2$SpreadDiscrep[i] >=sprmeasure)){
-          if(abs(AllGameandPred2$MySpread[i] + AllGameandPred2$SpreadDiscrep[i]) == abs(as.numeric(AllGameandPred2$home_spread[i]))){
-            AllGameandPred2$SpreadPlay[i] <- "Home Spread"
-          } else if(abs(AllGameandPred2$MySpread[i] - AllGameandPred2$SpreadDiscrep[i]) == abs(as.numeric(AllGameandPred2$home_spread[i]))){
-            AllGameandPred2$SpreadPlay[i] <- "Away Spread" 
-          }else{
-            AllGameandPred2$SpreadPlay[i] <- "Nah" 
-          }
-        }else{
-          AllGameandPred2$SpreadPlay[i] <- "No"
-        }
-        
-        #AllGameandPred2$SpreadAcc[i] <-  as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$home_spread[i])
-        
-        if((as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$home_spread[i])) >= AllGameandPred2$Score.A[i]){
-          if(AllGameandPred2$SpreadPlay[i] == "Away Spread"){
-            AllGameandPred2$SpreadAcc[i] <-  "Miss"
-          }else if(AllGameandPred2$SpreadPlay[i] == "Home Spread"){
-            AllGameandPred2$SpreadAcc[i] <- "Hit"
-          }else{
-            AllGameandPred2$SpreadAcc[i] <- NA
-          }
-        } else if((as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$home_spread[i])) < AllGameandPred2$Score.A[i]){
-          if(AllGameandPred2$SpreadPlay[i] == "Home Spread"){
-            AllGameandPred2$SpreadAcc[i] <-  "Miss"
-          }else if(AllGameandPred2$SpreadPlay[i] == "Away Spread"){
-            AllGameandPred2$SpreadAcc[i] <- "Hit"
-          }else{
-            AllGameandPred2$SpreadAcc[i] <- NA
-          }
-        }
-        
-      }
+    sprmeasure <- k/10
+    # --- 1. VECTORIZED SPREAD LOGIC (Replaces the first i loop) ---
+    
+    # Check if model favors Home or Away (using round to prevent floating-point errors)
+    is_home_play <- round(abs(AllGameandPred2$MySpread + AllGameandPred2$SpreadDiscrep), 4) == round(abs(AllGameandPred2$home_spread), 4)
+    is_away_play <- round(abs(AllGameandPred2$MySpread - AllGameandPred2$SpreadDiscrep), 4) == round(abs(AllGameandPred2$home_spread), 4)
+    
+    # Assign SpreadPlay
+    AllGameandPred2$SpreadPlay <- ifelse(AllGameandPred2$SpreadDiscrep >= sprmeasure,
+                                    ifelse(is_home_play, "Home Spread",
+                                    ifelse(is_away_play, "Away Spread", "Nah")),
+                                  "No")
+    
+    # Assign SpreadAcc
+    AllGameandPred2$SpreadAcc <- ifelse(home_covered & AllGameandPred2$SpreadPlay == "Home Spread", "Hit",
+                                 ifelse(home_covered & AllGameandPred2$SpreadPlay == "Away Spread", "Miss",
+                                 ifelse(away_covered & AllGameandPred2$SpreadPlay == "Away Spread", "Hit",
+                                 ifelse(away_covered & AllGameandPred2$SpreadPlay == "Home Spread", "Miss", NA))))
       
       for(j in 1:125){
-      #sets up total play and total accuary
-      for(i in 1:nrow(AllGameandPred2)){
+      
         totmeasure <- j/10
-        if(AllGameandPred2$home_total[i] - AllGameandPred2$MyTot[i] >= totmeasure){
-          AllGameandPred2$TotalPlay[i] <- "Under"
-        } else if(AllGameandPred2$home_total[i] - AllGameandPred2$MyTot[i] <= -(totmeasure)){
-          AllGameandPred2$TotalPlay[i] <- "Over"
-        } else{
-          AllGameandPred2$TotalPlay[i] <- "No"
-        }
         
-        #AllGameandPred2$totdiscrep[i] <- abs(AllGameandPred2$home_total[i] - AllGameandPred2$MyTot[i])
-        if((as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$Score.A[i])) >= AllGameandPred2$home_total[i]){
-          if(AllGameandPred2$TotalPlay[i] == "Over"){
-            AllGameandPred2$TotalAcc[i] <-  "Hit"
-          }else if(AllGameandPred2$TotalPlay[i] == "Under"){
-            AllGameandPred2$TotalAcc[i] <- "Miss"
-          }else{
-            AllGameandPred2$TotalAcc[i] <- NA
-          }
-        } else if((as.numeric(AllGameandPred2$Score.H[i]) + as.numeric(AllGameandPred2$Score.A[i])) <= AllGameandPred2$home_total[i]){
-          if(AllGameandPred2$TotalPlay[i] == "Under"){
-            AllGameandPred2$TotalAcc[i] <-  "Hit"
-          }else if(AllGameandPred2$TotalPlay[i] == "Over"){
-            AllGameandPred2$TotalAcc[i] <- "Miss"
-          }else{
-            AllGameandPred2$TotalAcc[i] <- NA
-          }
-        }
+        # 1. Vectorized Play Selection (Replaces your first i loop)
+        diff_tot <- AllGameandPred2$home_total - AllGameandPred2$MyTot
+        
+        AllGameandPred2$TotalPlay <- ifelse(diff_tot >= totmeasure, "Under",
+                                     ifelse(diff_tot <= -totmeasure, "Over", "No"))
+        
+        # 2. Vectorized Accuracy Check (Replaces your second i loop logic)
+        actual_tot <- as.numeric(AllGameandPred2$Score.H) + as.numeric(AllGameandPred2$Score.A)
+        
+        AllGameandPred2$TotalAcc <- ifelse(actual_tot >= AllGameandPred2$home_total & AllGameandPred2$TotalPlay == "Over", "Hit",
+                                    ifelse(actual_tot <= AllGameandPred2$home_total & AllGameandPred2$TotalPlay == "Under", "Hit",
+                                    ifelse(AllGameandPred2$TotalPlay %in% c("Over", "Under"), "Miss", NA)))
+        
+        # 3. Calculate results
+        TotHit <- sum(AllGameandPred2$TotalAcc == "Hit", na.rm = TRUE)
+        TotMiss <- sum(AllGameandPred2$TotalAcc == "Miss", na.rm = TRUE)
+        SprHit <- sum(AllGameandPred2$SpreadAcc == "Hit", na.rm = TRUE)
+        SprMiss <- sum(AllGameandPred2$SpreadAcc == "Miss", na.rm = TRUE)
+        
+        HitRate[k,j] <- (TotHit + SprHit) / (TotMiss + SprMiss + TotHit + SprHit)
+        NumPlays[k,j] <- (TotMiss + SprMiss + TotHit + SprHit)
+        ID[k,j] <- k + j
       }
+    
         TotHit <- length(which(AllGameandPred2$TotalAcc == "Hit"))
         TotMiss <- length(which(AllGameandPred2$TotalAcc == "Miss"))
         SprHit <- length(which(AllGameandPred2$SpreadAcc == "Hit"))
@@ -176,7 +155,12 @@ for (model_name in names(model_list)) {
     }
   }
 
+saveRDS(as.data.frame(HitRate), paste0(model_name,"HitRate_Grid.rds"))
+  
+saveRDS(as.data.frame(fundval), paste0(model_name,"FundVal_Grid.rds"))
 
+saveRDS(as.data.frame(NumPlays), paste0(model_name,"NumPlays_Grid.rds"))
+    
 }
 
     
