@@ -65,14 +65,15 @@ jobs:
       - name: Run script
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        working-directory: ./model_testing
         run: Rscript model_testing.R
-        #run_daily.R
+        #run_daily.R and remove working directory
 
       - name: Commit and Push results
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add *_Grid.rds
+          git add model_testing/*_Grid.rds
           git commit -m "Daily data update" || echo "No changes to commit"
           git pull --rebase origin main
           git push
