@@ -65,8 +65,7 @@ jobs:
       - name: Run script
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        working-directory: ./model_testing
-        run: Rscript model_testing.R
+        run: Rscript model_testing/model_testing.R
         #run_daily.R and remove working directory
 
       - name: Commit and Push results
