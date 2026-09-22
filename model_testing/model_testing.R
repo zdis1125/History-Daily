@@ -236,7 +236,7 @@ model_results <- model_results[
 
 rownames(model_results) <- NULL
 
-write.csv(model_results, "model_results.csv", row.names = FALSE)
+write.csv(model_results, "model_testing/model_results.csv", row.names = FALSE)
 
 #View(model_results)
 
