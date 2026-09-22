@@ -39,7 +39,7 @@ model_list <- list(
   #Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
   #Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
   #Support_Vector1    = function(f, data) svm(f, data = data, cost = 10, gamma = 0.1),
-  Support_Vector2    = function(f, data) svm(f, data = data),
+  Support_Vector2    = function(f, data) svm(f, data = data)
   #SVM_Radial        = function(f, data) svm(f, data = data, kernel = "radial", cost = 10),
   #gbm = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
   #gbm2 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 3, shrinkage = 0.01),
