@@ -47,7 +47,7 @@ model_list <- list(
   gbm5 = function(f,data) gbm(f,data = data, n.trees= 500,interaction.depth = 12, shrinkage = 0.0001),
   glm_Gam_log               = function(f, data) glm(f, data = data, family = Gamma(link = "log")),
   glm_Gam_ident              = function(f, data) glm(f, data = data, family = Gamma(link = "identity")),
-  glm_Gau_log               = function(f, data) glm(f, data = data, family = Gaussian(link = "log"))
+  glm_Gau_log               = function(f, data) glm(f, data = data, family = gaussian(link = "log"))
 )
 
 for (model_name in names(model_list)) {
