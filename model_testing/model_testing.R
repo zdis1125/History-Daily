@@ -50,6 +50,8 @@ model_list <- list(
   glm_Gau_log               = function(f, data) glm(f, data = data, family = gaussian(link = "log"))
 )
 
+model_results <- data.frame()
+
 for (model_name in names(model_list)) {
   
   fit_func <- model_list[[model_name]]
@@ -203,9 +205,38 @@ for (model_name in names(model_list)) {
       fundval[k, j] <- 10 * wins - 11 * losses
     }
   }
-  
+    max_fund <- max(fundval, na.rm = TRUE)
+
+  # Keep all coordinates if multiple threshold pairs tie for the maximum
+  locations <- which(fundval == max_fund, arr.ind = TRUE)
+
+  model_results <- rbind(
+    model_results,
+    data.frame(
+      Model = model_name,
+      MaxFundValue = max_fund,
+      NetUnits = max_fund / 10,
+      Row = locations[, "row"],
+      Column = locations[, "col"],
+      SpreadThreshold = locations[, "row"] / 10,
+      TotalThreshold = locations[, "col"] / 10
+    )
+  )
   # Save grids for this specific model
-  saveRDS(as.data.frame(HitRate), paste0("model_testing/",model_name, "_HitRate_Grid.rds"))
-  saveRDS(as.data.frame(fundval), paste0("model_testing/",model_name, "_FundVal_Grid.rds"))
-  saveRDS(as.data.frame(NumPlays), paste0("model_testing/",model_name, "_NumPlays_Grid.rds"))
+  #saveRDS(as.data.frame(HitRate), paste0("model_testing/",model_name, "_HitRate_Grid.rds"))
+  #saveRDS(as.data.frame(fundval), paste0("model_testing/",model_name, "_FundVal_Grid.rds"))
+  #saveRDS(as.data.frame(NumPlays), paste0("model_testing/",model_name, "_NumPlays_Grid.rds"))
 }
+
+
+# Sort models from highest to lowest fund value
+model_results <- model_results[
+  order(model_results$MaxFundValue, decreasing = TRUE),
+]
+
+rownames(model_results) <- NULL
+
+write.csv(model_results, "model_results.csv", row.names = FALSE)
+
+View(model_results)
+
