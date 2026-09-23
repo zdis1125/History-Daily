@@ -71,8 +71,8 @@ for (model_name in names(model_list)) {
   
   fit_func <- model_list[[model_name]]
   if(grepl("svm", model_name)){
-    HomePred <- fit_func(model_formulaH, x = train_x[keep_home, , drop = FALSE], y = home_y[keep_home])
-    AwayPred <- fit_func(model_formulaA, x = train_x[keep_home, , drop = FALSE], y = away_y[keep_home])
+    HomePred <- fit_func(x = train_x[keep_home, , drop = FALSE], y = home_y[keep_home])
+    AwayPred <- fit_func(x = train_x[keep_home, , drop = FALSE], y = away_y[keep_home])
   }else{
     HomePred <- fit_func(model_formulaH, data = dat25)
     AwayPred <- fit_func(model_formulaA, data = dat25)
