@@ -53,10 +53,10 @@ model_list <- list(
   #Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
   #Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
   #Support_Vector1    = function(f, data) svm(f, data = data, cost = 10, gamma = 0.1),
-  svm1     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = 1)
-  #svm2    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =.1, epsilon = 5)
+  svm1     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1)
+  #svm2    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =.1, epsilon = .5)
   #svm3    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =.1, epsilon = .01),
-  #svm4    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =.1, epsilon = 10),
+  #svm4    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =.1, epsilon = .001),
   #svm5    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =.1, epsilon = 3),
   #svm6    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.1, epsilon = 1),
   #svm7    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 1, gamma =.1, epsilon = 1),
@@ -83,7 +83,7 @@ for (model_name in names(model_list)) {
   fit_func <- model_list[[model_name]]
   if(grepl("svm", model_name)){
     HomePred <- fit_func(x = train_x[keep_home, , drop = FALSE], y = home_y[keep_home])
-    AwayPred <- fit_func(x = train_x[keep_home, , drop = FALSE], y = away_y[keep_home])
+    AwayPred <- fit_func(x = train_x[keep_away, , drop = FALSE], y = away_y[keep_away])
   }else{
     HomePred <- fit_func(model_formulaH, data = dat25)
     AwayPred <- fit_func(model_formulaA, data = dat25)
