@@ -5,6 +5,8 @@ library(gbm)
 
 dat25 <- read.csv("CBB_data.csv", skip = 2)
 dat25 <- dat25[-nrow(dat25), ]
+#dat25$Score.H <- as.numeric(dat25$Score.H)
+#dat25$Score.A <- as.numeric(dat25$Score.A)
 dat25$AdjO.A <- as.numeric(dat25$AdjO.A)
 dat25$AdjD.A <- as.numeric(dat25$AdjD.A)
 dat25$AdjT.A <- as.numeric(dat25$AdjT.A)
@@ -38,8 +40,8 @@ features <- c("AdjD.A", "AdjO.H", "AdjT.A",
 train_x <- dat25[, features, drop = FALSE]
 train_x[] <- lapply(train_x, as.numeric)
 
-home_y <- as.numeric(dat25$Score.H)
-away_y <- as.numeric(dat25$Score.A)
+home_y <- as.numeric(dat25$score.1)
+away_y <- as.numeric(dat25$score)
 
 keep_home <- complete.cases(train_x, home_y)
 keep_away <- complete.cases(train_x, away_y)
