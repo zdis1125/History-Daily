@@ -38,8 +38,6 @@ features <- c("AdjD.A", "AdjO.H", "AdjT.A",
 train_x <- dat25[, features, drop = FALSE]
 train_x[] <- lapply(train_x, as.numeric)
 
-
-
 home_y <- as.numeric(dat25$Score.H)
 away_y <- as.numeric(dat25$Score.A)
 
@@ -71,8 +69,8 @@ for (model_name in names(model_list)) {
   
   fit_func <- model_list[[model_name]]
   if(grepl("svm", model_name))
-    HomePred <- fit_func(model_formulaH, x = train_x, y = home_y)
-    AwayPred <- fit_func(model_formulaA, x = train_x, y = away_y)
+    HomePred <- fit_func(model_formulaH, x = train_x[keep_home, , drop = FALSE], y = home_y[keep_home])
+    AwayPred <- fit_func(model_formulaA, x = train_x[keep_home, , drop = FALSE], y = away_y[keep_home])
   else{
     HomePred <- fit_func(model_formulaH, data = dat25)
     AwayPred <- fit_func(model_formulaA, data = dat25)
