@@ -48,7 +48,7 @@ model_list <- list(
   #Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
   #Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
   #Support_Vector1    = function(f, data) svm(f, data = data, cost = 10, gamma = 0.1),
-  Support_Vector2    = function(x,y,) svm(f, data = data)
+  svm1    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =.1, epsilon = 1)
   #SVM_Radial        = function(f, data) svm(f, data = data, kernel = "radial", cost = 10),
   #gbm = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
   #gbm2 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 3, shrinkage = 0.01),
@@ -65,8 +65,13 @@ model_results <- data.frame()
 for (model_name in names(model_list)) {
   
   fit_func <- model_list[[model_name]]
-  HomePred <- fit_func(model_formulaH, data = dat25)
-  AwayPred <- fit_func(model_formulaA, data = dat25)
+  if(grepl("svm", model_name))
+    HomePred <- fit_func(model_formulaH, x = train_x, y = home_y)
+    AwayPred <- fit_func(model_formulaA, x = train_x, y = away_y)
+  else{
+    HomePred <- fit_func(model_formulaH, data = dat25)
+    AwayPred <- fit_func(model_formulaA, data = dat25)
+  }
   
   # --- OPTIMIZED PREDICTION FUNCTION ---
   PredScore <- function(GamesHist){
@@ -82,6 +87,9 @@ for (model_name in names(model_list)) {
       # gbm requires n.trees for prediction
       GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, ], n.trees = HomePred$n.trees, type = "response"), 1)
       GamesHist$PredAway[NonNA] <- round(predict(AwayPred, newdata = GamesHist[NonNA, ], n.trees = AwayPred$n.trees, type = "response"), 1)
+    } else if(grepl("svm", model_name)) {
+      GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, drop = FALSE]), 1)
+      GamesHist$PredAway[NonNA] <- round(predict(AwayPred, newdata = GamesHist[NonNA, drop = FALSE]), 1)
     } else {
       # Standard prediction for lm, glm, randomForest, svm
       GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, ], type = "response"), 1)
