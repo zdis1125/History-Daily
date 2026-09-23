@@ -32,8 +32,13 @@ AllGames$home_total <- as.numeric(AllGames$home_total)
 model_formulaA = score ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 model_formulaH = score.1 ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 
+features <- c("AdjD.A", "AdjO.H", "AdjT.A",
+              "AdjT.H", "AdjO.A", "AdjD.H")
+
 train_x <- dat25[, features, drop = FALSE]
 train_x[] <- lapply(train_x, as.numeric)
+
+
 
 home_y <- as.numeric(dat25$Score.H)
 away_y <- as.numeric(dat25$Score.A)
@@ -88,8 +93,8 @@ for (model_name in names(model_list)) {
       GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, ], n.trees = HomePred$n.trees, type = "response"), 1)
       GamesHist$PredAway[NonNA] <- round(predict(AwayPred, newdata = GamesHist[NonNA, ], n.trees = AwayPred$n.trees, type = "response"), 1)
     } else if(grepl("svm", model_name)) {
-      GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, drop = FALSE]), 1)
-      GamesHist$PredAway[NonNA] <- round(predict(AwayPred, newdata = GamesHist[NonNA, drop = FALSE]), 1)
+      GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, features, drop = FALSE]), 1)
+      GamesHist$PredAway[NonNA] <- round(predict(AwayPred, newdata = GamesHist[NonNA, features, drop = FALSE]), 1)
     } else {
       # Standard prediction for lm, glm, randomForest, svm
       GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, ], type = "response"), 1)
