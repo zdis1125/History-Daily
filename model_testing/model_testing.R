@@ -5,8 +5,8 @@ library(gbm)
 
 dat25 <- read.csv("CBB_data.csv", skip = 2)
 dat25 <- dat25[-nrow(dat25), ]
-#dat25$Score.H <- as.numeric(dat25$Score.H)
-#dat25$Score.A <- as.numeric(dat25$Score.A)
+dat25$score <- as.numeric(dat25$score)
+dat25$score.1 <- as.numeric(dat25$score.1)
 dat25$AdjO.A <- as.numeric(dat25$AdjO.A)
 dat25$AdjD.A <- as.numeric(dat25$AdjD.A)
 dat25$AdjT.A <- as.numeric(dat25$AdjT.A)
