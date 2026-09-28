@@ -384,6 +384,8 @@ fit1 <- lm(score ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H, data = 
 HomePred <- lm(score.1 ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H, data = dat25)
 AwayPred <- lm(score ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H, data = dat25)
 
+TotPred <- lm((score.1 + score) ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H, data = dat25)
+SprPred <- lm((score.1 - score) ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H, data = dat25)
 "summary(HomePred)
 summary(AwayPred)
 "
@@ -392,6 +394,8 @@ summary(AwayPred)
 PredScore <- function(GamesHist){
   GamesHist$PredHome <- NA
   GamesHist$PredAway <- NA
+  GamesHist$PredTot <- NA
+  GamesHist$PredSpr <- NA
   NonNA <- which(is.na(GamesHist$Score.H) == FALSE)
   for(i in NonNA){
     new_game = data.frame( AdjO.A = as.numeric(GamesHist$AdjO.A[i]),
@@ -403,6 +407,8 @@ PredScore <- function(GamesHist){
     )
     GamesHist$PredHome[i] <- round(predict(HomePred, new_game),1)
     GamesHist$PredAway[i] <- round(predict(AwayPred, new_game),1)
+    GamesHist$PredTot[i] <- round(predict(TotPred, new_game),1)
+    GamesHist$PredSpr[i] <- round(predict(HomePred, new_game),1)
   }
   return(GamesHist)
 }
@@ -441,6 +447,7 @@ FlipGameandPred <- FlipPredScore(AllGames)
 #AllGame andPred2 has all the games and predictions with a score that was tracked
 AllGameandPred2 <- AllGameandPred[-which(is.na(AllGameandPred$PredAway) == TRUE),]
 
+#Alternatively, change these to the Spr and Tot predictions for the following two lines to easily change
 AllGameandPred2$MySpread <- AllGameandPred2$PredAway - AllGameandPred2$PredHome
 AllGameandPred2$MyTot <- AllGameandPred2$PredHome + AllGameandPred2$PredAway
 
