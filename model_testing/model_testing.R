@@ -1,6 +1,7 @@
 library(randomForest)
 library(e1071)
 library(gbm)
+set.seed(10)
 # library(gbm) # Uncomment if you add gbm back
 
 dat25 <- read.csv("CBB_data.csv", skip = 2)
