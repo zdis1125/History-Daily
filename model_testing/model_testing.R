@@ -167,7 +167,6 @@ for (model_name in names(model_list)) {
   AllGameandPred2$MySpread <- round(
     AllGameandPred2$PredAway - AllGameandPred2$PredHome, 1
   )
-
   
   AllGameandPred2$MyTot <- round(
     AllGameandPred2$PredHome + AllGameandPred2$PredAway, 1
@@ -178,8 +177,15 @@ for (model_name in names(model_list)) {
     AllGameandPred2$home_spread - AllGameandPred2$MySpread, 1
   )
 
+  #SpreadEdge2 is using the direct spread calc
+  AllGameandPred2$SpreadEdge2 <- round(
+    AllGameandPred2$home_spread - AllGameandPred2$PredSpr, 1
+  )
+
   AllGameandPred2$SpreadDiscrep <- abs(AllGameandPred2$SpreadEdge)
 
+  AllGameandPred2$SpreadDiscrep2 <-abs(AllGameandPred2$SpreadEdge2)
+  
   # Positive total edge = Over; negative = Under
   AllGameandPred2$TotalEdge <- round(
     AllGameandPred2$MyTot - AllGameandPred2$home_total, 1
@@ -188,7 +194,7 @@ for (model_name in names(model_list)) {
   # Positive margins mean Home covered / total went Over
   spread_margin <- AllGameandPred2$Score.H +
     AllGameandPred2$home_spread - AllGameandPred2$Score.A
-
+  
   total_margin <- AllGameandPred2$Score.H +
     AllGameandPred2$Score.A - AllGameandPred2$home_total
 
