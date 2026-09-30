@@ -212,6 +212,10 @@ for (model_name in names(model_list)) {
     result
   }
 
+  ##exact score predictions
+  awayExcta <- len(which(round(AllGameandPred2$PredAway,0) == round(AllGameandPred2$Score.A,0)))
+  homeExcta <- len(which(round(AllGameandPred2$PredHome,0) == round(AllGameandPred2$Score.H,0)))
+  
   HitRate <- matrix(NA_real_, nrow = 80, ncol = 125)
   NumPlays <- matrix(0, nrow = 80, ncol = 125)
   ID <- matrix(0, nrow = 80, ncol = 125)
@@ -295,7 +299,9 @@ for (model_name in names(model_list)) {
       Row = locations[, "row"],
       Column = locations[, "col"],
       SpreadThreshold = locations[, "row"] / 10,
-      TotalThreshold = locations[, "col"] / 10
+      TotalThreshold = locations[, "col"] / 10,
+      awayExcta,
+      homeExcta
     )
   )
   # Save grids for this specific model
@@ -303,6 +309,8 @@ for (model_name in names(model_list)) {
   #saveRDS(as.data.frame(fundval), paste0("model_testing/",model_name, "_FundVal_Grid.rds"))
   #saveRDS(as.data.frame(NumPlays), paste0("model_testing/",model_name, "_NumPlays_Grid.rds"))
 }
+
+
 
 
 # Sort models from highest to lowest fund value
