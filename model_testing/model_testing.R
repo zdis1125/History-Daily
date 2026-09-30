@@ -178,13 +178,13 @@ for (model_name in names(model_list)) {
   )
 
   #SpreadEdge2 is using the direct spread calc
-  AllGameandPred2$SpreadEdge2 <- round(
-    AllGameandPred2$home_spread - AllGameandPred2$PredSpr, 1
-  )
+  #AllGameandPred2$SpreadEdge2 <- round(
+    #AllGameandPred2$home_spread - AllGameandPred2$PredSpr, 1
+  #)
 
   AllGameandPred2$SpreadDiscrep <- abs(AllGameandPred2$SpreadEdge)
 
-  AllGameandPred2$SpreadDiscrep2 <-abs(AllGameandPred2$SpreadEdge2)
+  #AllGameandPred2$SpreadDiscrep2 <-abs(AllGameandPred2$SpreadEdge2)
   
   # Positive total edge = Over; negative = Under
   AllGameandPred2$TotalEdge <- round(
