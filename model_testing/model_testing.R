@@ -3,7 +3,7 @@ library(e1071)
 library(gbm)
 set.seed(10)
 # library(gbm) # Uncomment if you add gbm back
-setwd("C:/Users/zdis1/OneDrive - University of Connecticut/CBB/Cbb/Cbb_Model_App")
+#setwd("C:/Users/zdis1/OneDrive - University of Connecticut/CBB/Cbb/Cbb_Model_App")
 dat25 <- read.csv("CBB_data.csv", skip = 2)
 dat25 <- dat25[-nrow(dat25), ]
 dat25$score <- as.numeric(dat25$score)
