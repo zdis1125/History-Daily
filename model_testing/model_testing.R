@@ -3,7 +3,7 @@ library(e1071)
 library(gbm)
 set.seed(10)
 # library(gbm) # Uncomment if you add gbm back
-
+setwd("C:/Users/zdis1/OneDrive - University of Connecticut/CBB/Cbb/Cbb_Model_App")
 dat25 <- read.csv("CBB_data.csv", skip = 2)
 dat25 <- dat25[-nrow(dat25), ]
 dat25$score <- as.numeric(dat25$score)
@@ -52,56 +52,56 @@ keep_away <- complete.cases(train_x, away_y)
 model_list <- list(
   Linear_Regression = function(f, data) lm(f, data = data)
   #Random Forests
-    #Random_Forest     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
-    #Random_Forest2     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 3),
-    #Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
-    #Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
+  #Random_Forest     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
+  #Random_Forest2     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 3),
+  #Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
+  #Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
   #Support Vectors
-    #epsilon testing
-    #svm1     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = 1),
-    #svm2     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .5),
-    #svm3    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-    #svm4    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .01),
-    #svm5    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .001),
-    #Cost Testing
-    #svm6    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =1, epsilon = .1),
-    #svm7    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-    #svm8    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 1, gamma =1, epsilon = .1),
-    #svm9    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .1, gamma =1, epsilon = .1),
-    #svm10    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .01, gamma =1, epsilon = .1),
-    #Gamma testing
-    #svm11    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =100, epsilon = .1),
-    #svm12    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =10, epsilon = .1),
-    #svm13    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-    #svm14    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.1, epsilon = .1),
-    #svm15    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.01, epsilon = .1),
+  #epsilon testing
+  #svm1     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = 1),
+  #svm2     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .5),
+  #svm3    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  #svm4    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .01),
+  #svm5    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .001),
+  #Cost Testing
+  #svm6    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =1, epsilon = .1),
+  #svm7    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  #svm8    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 1, gamma =1, epsilon = .1),
+  #svm9    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .1, gamma =1, epsilon = .1),
+  #svm10    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .01, gamma =1, epsilon = .1),
+  #Gamma testing
+  #svm11    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =100, epsilon = .1),
+  #svm12    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =10, epsilon = .1),
+  #svm13    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  #svm14    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.1, epsilon = .1),
+  #svm15    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.01, epsilon = .1),
   #GBM
-    #ntrees testing
-    #gbm1 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.01),
-    #gbm2 = function(f,data) gbm(f,data = data, n.trees= 20000,interaction.depth = 1, shrinkage = 0.01),
-    #gbm3 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
-    #gbm4 = function(f,data) gbm(f,data = data, n.trees= 5000,interaction.depth = 1, shrinkage = 0.01),
-    #gbm5 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 1, shrinkage = 0.01),
-    #gbm6 = function(f,data) gbm(f,data = data, n.trees= 500,interaction.depth = 1, shrinkage = 0.01),
-    #gbm7 = function(f,data) gbm(f,data = data, n.trees= 100,interaction.depth = 1, shrinkage = 0.01),
-    #int depth testing
-    #gbm8 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 10, shrinkage = 0.01),
-    #gbm9 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.01),
-    #gbm10 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 3, shrinkage = 0.01),
-    #gbm11 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
-    #shrinkage testing
-    #gbm12 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.5),
-    #gbm13 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.1),
-    #gbm14 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.05),
-    #gbm15 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
-    #gbm16 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.001),
-    #combination testing
-      #High Trees, Super slow, and shallow
-      #gbm17 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.001),
-      #Low Trees, Quick, and deep
-      #gbm18 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 5, shrinkage = 0.5),
-      #Normal Trees, Quick, and Shallow
-      #gbm19 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.5)
+  #ntrees testing
+  #gbm1 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.01),
+  #gbm2 = function(f,data) gbm(f,data = data, n.trees= 20000,interaction.depth = 1, shrinkage = 0.01),
+  #gbm3 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
+  #gbm4 = function(f,data) gbm(f,data = data, n.trees= 5000,interaction.depth = 1, shrinkage = 0.01),
+  #gbm5 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 1, shrinkage = 0.01),
+  #gbm6 = function(f,data) gbm(f,data = data, n.trees= 500,interaction.depth = 1, shrinkage = 0.01),
+  #gbm7 = function(f,data) gbm(f,data = data, n.trees= 100,interaction.depth = 1, shrinkage = 0.01),
+  #int depth testing
+  #gbm8 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 10, shrinkage = 0.01),
+  #gbm9 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.01),
+  #gbm10 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 3, shrinkage = 0.01),
+  #gbm11 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
+  #shrinkage testing
+  #gbm12 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.5),
+  #gbm13 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.1),
+  #gbm14 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.05),
+  #gbm15 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
+  #gbm16 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.001),
+  #combination testing
+  #High Trees, Super slow, and shallow
+  #gbm17 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.001),
+  #Low Trees, Quick, and deep
+  #gbm18 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 5, shrinkage = 0.5),
+  #Normal Trees, Quick, and Shallow
+  #gbm19 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.5)
   #glm_Gam_log               = function(f, data) glm(f, data = data, family = Gamma(link = "log")),
   #glm_Gam_ident              = function(f, data) glm(f, data = data, family = Gamma(link = "identity")),
   #glm_Gau_log               = function(f, data) glm(f, data = data, family = gaussian(link = "log"))
@@ -118,14 +118,16 @@ for (model_name in names(model_list)) {
   }else{
     HomePred <- fit_func(model_formulaH, data = dat25)
     AwayPred <- fit_func(model_formulaA, data = dat25)
-    TotPred <- fit_func(model_formulaSpr, data = dat25)
-    SprPred <- fit_func(model_formulaTot, data = dat25)
+    TotPred <- fit_func(model_formulaTot, data = dat25)
+    SprPred <- fit_func(model_formulaSpr, data = dat25)
   }
   
   # --- OPTIMIZED PREDICTION FUNCTION ---
   PredScore <- function(GamesHist){
     GamesHist$PredHome <- NA
     GamesHist$PredAway <- NA
+    GamesHist$PredSpr <- NA
+    GamesHist$PredTot <- NA
     
     NonNA <- which(!is.na(GamesHist$Score.H))
     
@@ -156,14 +158,14 @@ for (model_name in names(model_list)) {
   AllGameandPred <- PredScore(AllGames)
   
   # Filter out games without predictions
-    # Keep games with both predictions and both final scores
+  # Keep games with both predictions and both final scores
   AllGameandPred2 <- AllGameandPred[
     complete.cases(
       AllGameandPred[, c("PredHome", "PredAway", "Score.H", "Score.A")]
     ),
     , drop = FALSE
   ]
-
+  
   AllGameandPred2$MySpread <- round(
     AllGameandPred2$PredAway - AllGameandPred2$PredHome, 1
   )
@@ -171,125 +173,126 @@ for (model_name in names(model_list)) {
   AllGameandPred2$MyTot <- round(
     AllGameandPred2$PredHome + AllGameandPred2$PredAway, 1
   )
-
+  
   # Positive spread edge = Home; negative = Away
   AllGameandPred2$SpreadEdge <- round(
     AllGameandPred2$home_spread - AllGameandPred2$MySpread, 1
   )
-
+  
   #SpreadEdge2 is using the direct spread calc
   #AllGameandPred2$SpreadEdge2 <- round(
-    #AllGameandPred2$home_spread - AllGameandPred2$PredSpr, 1
+  #AllGameandPred2$home_spread - AllGameandPred2$PredSpr, 1
   #)
-
+  
   AllGameandPred2$SpreadDiscrep <- abs(AllGameandPred2$SpreadEdge)
-
+  
   #AllGameandPred2$SpreadDiscrep2 <-abs(AllGameandPred2$SpreadEdge2)
   
   # Positive total edge = Over; negative = Under
   AllGameandPred2$TotalEdge <- round(
     AllGameandPred2$MyTot - AllGameandPred2$home_total, 1
   )
-
+  
   # Positive margins mean Home covered / total went Over
   spread_margin <- AllGameandPred2$Score.H +
     AllGameandPred2$home_spread - AllGameandPred2$Score.A
   
   total_margin <- AllGameandPred2$Score.H +
     AllGameandPred2$Score.A - AllGameandPred2$home_total
-
+  
   # Grade the margin from the selected side's perspective
   grade_pick <- function(selected, margin) {
     result <- rep(NA_character_, length(margin))
     valid <- selected & is.finite(margin)
-
+    
     result[valid] <- ifelse(
       abs(margin[valid]) < 1e-8,
       "Push",
       ifelse(margin[valid] >= 0, "Hit", "Miss")
     )
-
+    
     result
   }
-
+  
   ##exact score predictions
-  awayExcta <- len(which(round(AllGameandPred2$PredAway,0) == round(AllGameandPred2$Score.A,0)))
-  homeExcta <- len(which(round(AllGameandPred2$PredHome,0) == round(AllGameandPred2$Score.H,0)))
+  awayExcta <- length(which(round(AllGameandPred2$PredAway,0) == round(AllGameandPred2$Score.A,0)))
+  homeExcta <- length(which(round(AllGameandPred2$PredHome,0) == round(AllGameandPred2$Score.H,0)))
+  PureExacta <- length(which(round(AllGameandPred2$PredAway,0) == round(AllGameandPred2$Score.A,0) & round(AllGameandPred2$PredHome,0) == round(AllGameandPred2$Score.H,0)))
   
   HitRate <- matrix(NA_real_, nrow = 80, ncol = 125)
   NumPlays <- matrix(0, nrow = 80, ncol = 125)
   ID <- matrix(0, nrow = 80, ncol = 125)
   fundval <- matrix(0, nrow = 80, ncol = 125)
-
+  
   for (k in 1:80) {
     sprmeasure <- k / 10
-
+    
     # Strictly greater than the spread threshold
     spread_selected <- is.finite(AllGameandPred2$SpreadEdge) &
       AllGameandPred2$SpreadDiscrep >= sprmeasure
-
+    
     AllGameandPred2$SpreadPlay <- ifelse(
       spread_selected,
       ifelse(AllGameandPred2$SpreadEdge >= 0,
              "Home Spread", "Away Spread"),
       "No"
     )
-
+    
     # Multiply by the edge's sign to grade the chosen side
     AllGameandPred2$SpreadAcc <- grade_pick(
       spread_selected,
       spread_margin * sign(AllGameandPred2$SpreadEdge)
     )
-
+    
     SprHit <- sum(AllGameandPred2$SpreadAcc == "Hit", na.rm = TRUE)
     SprMiss <- sum(AllGameandPred2$SpreadAcc == "Miss", na.rm = TRUE)
-
+    
     for (j in 1:125) {
       totmeasure <- j / 10
-
+      
       # Strictly greater than the total threshold
       total_selected <- is.finite(AllGameandPred2$TotalEdge) &
         abs(AllGameandPred2$TotalEdge) >= totmeasure
-
+      
       AllGameandPred2$TotalPlay <- ifelse(
         total_selected,
         ifelse(AllGameandPred2$TotalEdge >= 0, "Over", "Under"),
         "No"
       )
-
+      
       AllGameandPred2$TotalAcc <- grade_pick(
         total_selected,
         total_margin * sign(AllGameandPred2$TotalEdge)
       )
-
+      
       TotHit <- sum(AllGameandPred2$TotalAcc == "Hit", na.rm = TRUE)
       TotMiss <- sum(AllGameandPred2$TotalAcc == "Miss", na.rm = TRUE)
-
+      
       wins <- SprHit + TotHit
       losses <- SprMiss + TotMiss
-
+      
       # Preserve your original definition: wins + losses
       # Pushes are excluded from play count and hit rate
       NumPlays[k, j] <- wins + losses
-
+      
       HitRate[k, j] <- if (wins + losses > 0) {
         wins / (wins + losses)
       } else {
         NA_real_
       }
-
+      
       ID[k, j] <- k + j
-
+      
       # Preserve your original fund-value scale
       # +10 per win, -11 per loss, 0 per push
       fundval[k, j] <- 10 * wins - 11 * losses
     }
   }
-    max_fund <- max(fundval, na.rm = TRUE)
-
+  max_fund <- max(fundval, na.rm = TRUE)
+  
   # Keep all coordinates if multiple threshold pairs tie for the maximum
   locations <- which(fundval == max_fund, arr.ind = TRUE)
-
+  
   model_results <- rbind(
     model_results,
     data.frame(
@@ -300,8 +303,9 @@ for (model_name in names(model_list)) {
       Column = locations[, "col"],
       SpreadThreshold = locations[, "row"] / 10,
       TotalThreshold = locations[, "col"] / 10,
+      homeExcta,
       awayExcta,
-      homeExcta
+      PureExacta
     )
   )
   # Save grids for this specific model
@@ -323,4 +327,3 @@ rownames(model_results) <- NULL
 write.csv(model_results, "model_testing/model_results.csv", row.names = FALSE)
 
 #View(model_results)
-
