@@ -101,7 +101,7 @@ model_list <- list(
   #Low Trees, Quick, and deep
   gbm18 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 5, shrinkage = 0.5),
   #Normal Trees, Quick, and Shallow
-  gbm19 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.5)
+  gbm19 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.5),
   #GLMS
   glm_Gam_log = function(f, data) glm(f, data = data, family = Gamma(link = "log")),
   glm_Gam_ident = function(f, data) glm(f, data = data, family = Gamma(link = "identity")),
