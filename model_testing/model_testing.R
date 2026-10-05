@@ -1,6 +1,6 @@
 library(randomForest)
 library(e1071)
-library(gbm)
+library(gbm3)
 set.seed(10)
 # library(gbm) # Uncomment if you add gbm back
 #setwd("C:/Users/zdis1/OneDrive - University of Connecticut/CBB/Cbb/Cbb_Model_App")
