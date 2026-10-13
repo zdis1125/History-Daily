@@ -40,8 +40,14 @@ model_formulaSpr = (score.1-score) ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A
 model_formulaTot = (score.1+score) ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 
 
-model_formulaGAMH = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)
-model_formulaGAMA = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)
+model_formulaGAMH1 = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)
+model_formulaGAMA1 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)
+
+model_formulaGAMH2 = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjO.H, AdjT.H) + ti(AdjO.A, AdjT.A)
+model_formulaGAMA2 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjO.H, AdjT.H) + ti(AdjO.A, AdjT.A)
+
+model_formulaGAMH3 = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ te(AdjO.H, AdjT.H) + te(AdjO.A, AdjT.A) 
+model_formulaGAMA3 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ te(AdjO.H, AdjT.H) + te(AdjO.A, AdjT.A)
 
 features <- c("AdjD.A", "AdjO.H", "AdjT.A",
               "AdjT.H", "AdjO.A", "AdjD.H")
@@ -113,7 +119,9 @@ model_list <- list(
   #glm_Gam_ident = function(f, data) glm(f, data = data, family = Gamma(link = "identity")),
   #glm_Gau_log = function(f, data) glm(f, data = data, family = gaussian(link = "log"))
   #GAMs
-  gam1 = function(f,data) gam(f, data = data)
+  gam1 = function(f,data) gam(f, data = data),
+  gam2 = function(f,data) gam(f, data = data),
+  gam3 = function(f,data) gam(f, data = data)
 )
 
 model_results <- data.frame()
@@ -124,9 +132,15 @@ for (model_name in names(model_list)) {
   if(grepl("svm", model_name)){
     HomePred <- fit_func(x = train_x[keep_home, , drop = FALSE], y = home_y[keep_home])
     AwayPred <- fit_func(x = train_x[keep_away, , drop = FALSE], y = away_y[keep_away])
-  }else if(grepl("gam", model_name)){
-    HomePred <- fit_func(model_formulaGAMH, data = dat25)
-    AwayPred <- fit_func(model_formulaGAMA, data = dat25)
+  }else if(grepl("gam1", model_name)){
+    HomePred <- fit_func(model_formulaGAMH1, data = dat25)
+    AwayPred <- fit_func(model_formulaGAMA1, data = dat25)
+  }else if(grepl("gam2", model_name)){
+    HomePred <- fit_func(model_formulaGAMH2, data = dat25)
+    AwayPred <- fit_func(model_formulaGAMA2, data = dat25)
+  }else if(grepl("gam2", model_name)){
+    HomePred <- fit_func(model_formulaGAMH3, data = dat25)
+    AwayPred <- fit_func(model_formulaGAMA3, data = dat25)
   }else{
     HomePred <- fit_func(model_formulaH, data = dat25)
     AwayPred <- fit_func(model_formulaA, data = dat25)
