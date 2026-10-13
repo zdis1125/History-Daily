@@ -1,7 +1,7 @@
 library(randomForest)
 library(e1071)
 library(gbm3)
-libbrary(mgcv)
+library(mgcv)
 
 set.seed(10)
 # library(gbm) # Uncomment if you add gbm back
