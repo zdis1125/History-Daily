@@ -56,7 +56,7 @@ keep_home <- complete.cases(train_x, home_y)
 keep_away <- complete.cases(train_x, away_y)
 
 model_list <- list(
-  Linear_Regression = function(f, data) lm(f, data = data)
+  Linear_Regression = function(f, data) lm(f, data = data),
   #Random Forests
   #Random_Forest1     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
   #Random_Forest2     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 3),
