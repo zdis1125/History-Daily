@@ -1,4 +1,6 @@
 "Model","MaxFundValue","NetUnits","Row","Column","SpreadThreshold","TotalThreshold","homeExcta","awayExcta","PureExacta"
 "gam1",756,75.6,73,89,7.3,8.9,89,82,3
 "gam1",756,75.6,73,90,7.3,9,89,82,3
+"gam2",726,72.6,77,88,7.7,8.8,106,84,5
 "Linear_Regression",178,17.8,36,89,3.6,8.9,114,126,2
+"gam3",178,17.8,36,89,3.6,8.9,114,126,2
