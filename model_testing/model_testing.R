@@ -1,6 +1,8 @@
 library(randomForest)
 library(e1071)
 library(gbm3)
+libbrary(mgcv)
+
 set.seed(10)
 # library(gbm) # Uncomment if you add gbm back
 #setwd("C:/Users/zdis1/OneDrive - University of Connecticut/CBB/Cbb/Cbb_Model_App")
@@ -36,6 +38,10 @@ model_formulaA = score ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 model_formulaH = score.1 ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 model_formulaSpr = (score.1-score) ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 model_formulaTot = (score.1+score) ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
+
+
+model_formulaGAMH = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)
+model_formulaGAMA = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)
 
 features <- c("AdjD.A", "AdjO.H", "AdjT.A",
               "AdjT.H", "AdjO.A", "AdjD.H")
@@ -102,10 +108,12 @@ model_list <- list(
   #gbm18 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 5, shrinkage = 0.5),
   #Normal Trees, Quick, and Shallow
   #gbm19 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.5)
-  #GLMS
+  #GLMs
   #glm_Gam_log = function(f, data) glm(f, data = data, family = Gamma(link = "log")),
   #glm_Gam_ident = function(f, data) glm(f, data = data, family = Gamma(link = "identity")),
   #glm_Gau_log = function(f, data) glm(f, data = data, family = gaussian(link = "log"))
+  #GAMs
+  gam1 <- gam(f, data = dat25,method = "REML")
 )
 
 model_results <- data.frame()
@@ -116,6 +124,9 @@ for (model_name in names(model_list)) {
   if(grepl("svm", model_name)){
     HomePred <- fit_func(x = train_x[keep_home, , drop = FALSE], y = home_y[keep_home])
     AwayPred <- fit_func(x = train_x[keep_away, , drop = FALSE], y = away_y[keep_away])
+  }else if (grepl("gam", model_name)){
+    HomePred <- fit_func(model_formulaGAMH, data = dat25)
+    AwayPred <- fit_func(model_formulaGAMA, data = dat25)
   }else{
     HomePred <- fit_func(model_formulaH, data = dat25)
     AwayPred <- fit_func(model_formulaA, data = dat25)
