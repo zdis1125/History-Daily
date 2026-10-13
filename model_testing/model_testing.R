@@ -113,7 +113,7 @@ model_list <- list(
   #glm_Gam_ident = function(f, data) glm(f, data = data, family = Gamma(link = "identity")),
   #glm_Gau_log = function(f, data) glm(f, data = data, family = gaussian(link = "log"))
   #GAMs
-  gam1 <- function(f,data) gam(f, data = dat25,method = "REML")
+  gam1 <- function(f,data) gam(f, data = data,method = "REML")
 )
 
 model_results <- data.frame()
@@ -124,7 +124,7 @@ for (model_name in names(model_list)) {
   if(grepl("svm", model_name)){
     HomePred <- fit_func(x = train_x[keep_home, , drop = FALSE], y = home_y[keep_home])
     AwayPred <- fit_func(x = train_x[keep_away, , drop = FALSE], y = away_y[keep_away])
-  }else if (grepl("gam", model_name)){
+  }else if(grepl("gam", model_name)){
     HomePred <- fit_func(model_formulaGAMH, data = dat25)
     AwayPred <- fit_func(model_formulaGAMA, data = dat25)
   }else{
