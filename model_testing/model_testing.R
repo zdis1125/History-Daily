@@ -101,8 +101,8 @@ model_list <- list(
   #svm15    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.01, epsilon = .1),
   #GBM
   #ntrees testing
-  gbm1 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
-  gbm2 = function(f,data) gbm(f,data = data, n.trees= 20000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  #gbm1 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  #gbm2 = function(f,data) gbm(f,data = data, n.trees= 20000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
   gbm3 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
   gbm4 = function(f,data) gbm(f,data = data, n.trees= 5000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
   gbm5 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
