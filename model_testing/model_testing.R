@@ -149,10 +149,10 @@ for (model_name in names(model_list)) {
   }else if(grepl("gam3", model_name)){
     HomePred <- fit_func(model_formulaGAMH3, data = dat25)
     AwayPred <- fit_func(model_formulaGAMA3, data = dat25)
-  }}else if(grepl("gam4", model_name)){
+  }else if(grepl("gam4", model_name)){
     HomePred <- fit_func(model_formulaGAMH4, data = dat25)
     AwayPred <- fit_func(model_formulaGAMA4, data = dat25)
-  }}else if(grepl("gam5", model_name)){
+  }else if(grepl("gam5", model_name)){
     HomePred <- fit_func(model_formulaGAMH5, data = dat25)
     AwayPred <- fit_func(model_formulaGAMA5, data = dat25)
   }else{
