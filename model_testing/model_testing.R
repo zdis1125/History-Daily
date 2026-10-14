@@ -55,6 +55,12 @@ model_formulaGAMA4 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(Adj
 model_formulaGAMH5 = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjO.H, AdjD.H) + ti(AdjO.A, AdjD.A) 
 model_formulaGAMA5 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjO.H, AdjD.H) + ti(AdjO.A, AdjD.A)
 
+model_formulaGAMH6 = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjT.H, AdjT.H)
+model_formulaGAMA6 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjT.H, AdjT.H)
+
+model_formulaGAMH7 = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A) + ti(AdjT.H, AdjT.H) + ti(AdjO.H, AdjD.H) + ti(AdjO.A, AdjD.A) + ti(AdjO.H, AdjT.H) + ti(AdjO.A, AdjT.A) + ti(AdjD.H, AdjT.H) + ti(AdjD.A, AdjT.A)  
+model_formulaGAMA7 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjT.H, AdjT.H) + ti(AdjO.H, AdjD.H) + ti(AdjO.A, AdjD.A) + ti(AdjO.H, AdjT.H) + ti(AdjO.A, AdjT.A) + ti(AdjD.H, AdjT.H) + ti(AdjD.A, AdjT.A)  
+
 features <- c("AdjD.A", "AdjO.H", "AdjT.A",
               "AdjT.H", "AdjO.A", "AdjD.H")
 
@@ -70,56 +76,56 @@ keep_away <- complete.cases(train_x, away_y)
 model_list <- list(
   Linear_Regression = function(f, data) lm(f, data = data),
   #Random Forests
-  #Random_Forest1     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
-  #Random_Forest2     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 3),
-  #Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
-  #Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
+  Random_Forest1     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
+  Random_Forest2     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 3),
+  Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
+  Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
   #Support Vectors
   #epsilon testing
-  #svm1     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = 1),
-  #svm2     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .5),
-  #svm3    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-  #svm4    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .01),
-  #svm5    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .001),
+  svm1     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = 1),
+  svm2     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .5),
+  svm3    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  svm4    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .01),
+  svm5    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .001),
   #Cost Testing
-  #svm6    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =1, epsilon = .1),
-  #svm7    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-  #svm8    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 1, gamma =1, epsilon = .1),
-  #svm9    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .1, gamma =1, epsilon = .1),
-  #svm10    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .01, gamma =1, epsilon = .1),
+  svm6    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =1, epsilon = .1),
+  svm7    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  svm8    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 1, gamma =1, epsilon = .1),
+  svm9    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .1, gamma =1, epsilon = .1),
+  svm10    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .01, gamma =1, epsilon = .1),
   #Gamma testing
-  #svm11    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =100, epsilon = .1),
-  #svm12    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =10, epsilon = .1),
-  #svm13    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-  #svm14    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.1, epsilon = .1),
-  #svm15    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.01, epsilon = .1),
+  svm11    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =100, epsilon = .1),
+  svm12    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =10, epsilon = .1),
+  svm13    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  svm14    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.1, epsilon = .1),
+  svm15    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.01, epsilon = .1),
   #GBM
   #ntrees testing
-  #gbm1 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.01),
-  #gbm2 = function(f,data) gbm(f,data = data, n.trees= 20000,interaction.depth = 1, shrinkage = 0.01),
-  #gbm3 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
-  #gbm4 = function(f,data) gbm(f,data = data, n.trees= 5000,interaction.depth = 1, shrinkage = 0.01),
-  #gbm5 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 1, shrinkage = 0.01),
-  #gbm6 = function(f,data) gbm(f,data = data, n.trees= 500,interaction.depth = 1, shrinkage = 0.01),
-  #gbm7 = function(f,data) gbm(f,data = data, n.trees= 100,interaction.depth = 1, shrinkage = 0.01),
+  gbm1 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.01),
+  gbm2 = function(f,data) gbm(f,data = data, n.trees= 20000,interaction.depth = 1, shrinkage = 0.01),
+  gbm3 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
+  gbm4 = function(f,data) gbm(f,data = data, n.trees= 5000,interaction.depth = 1, shrinkage = 0.01),
+  gbm5 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 1, shrinkage = 0.01),
+  gbm6 = function(f,data) gbm(f,data = data, n.trees= 500,interaction.depth = 1, shrinkage = 0.01),
+  gbm7 = function(f,data) gbm(f,data = data, n.trees= 100,interaction.depth = 1, shrinkage = 0.01),
   #int depth testing
-  #gbm8 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 10, shrinkage = 0.01),
-  #gbm9 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.01),
-  #gbm10 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 3, shrinkage = 0.01),
-  #gbm11 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
+  gbm8 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 10, shrinkage = 0.01),
+  gbm9 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.01),
+  gbm10 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 3, shrinkage = 0.01),
+  gbm11 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
   #shrinkage testing
-  #gbm12 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.5),
-  #gbm13 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.1),
-  #gbm14 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.05),
-  #gbm15 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
-  #gbm16 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.001),
+  gbm12 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.5),
+  gbm13 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.1),
+  gbm14 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.05),
+  gbm15 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
+  gbm16 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.001),
   #combination testing
   #High Trees, Super slow, and shallow
-  #gbm17 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.001),
+  gbm17 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.001),
   #Low Trees, Quick, and deep
-  #gbm18 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 5, shrinkage = 0.5),
+  gbm18 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 5, shrinkage = 0.5),
   #Normal Trees, Quick, and Shallow
-  #gbm19 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.5)
+  gbm19 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.5),
   #GLMs
   #glm_Gam_log = function(f, data) glm(f, data = data, family = Gamma(link = "log")),
   #glm_Gam_ident = function(f, data) glm(f, data = data, family = Gamma(link = "identity")),
@@ -129,7 +135,9 @@ model_list <- list(
   gam2 = function(f,data) gam(f, data = data),
   gam3 = function(f,data) gam(f, data = data),
   gam4 = function(f,data) gam(f, data = data),
-  gam5 = function(f,data) gam(f, data = data)
+  gam5 = function(f,data) gam(f, data = data),
+  gam6 = function(f,data) gam(f, data = data),
+  gam7 = function(f,data) gam(f, data = data)
 )
 
 model_results <- data.frame()
@@ -155,6 +163,12 @@ for (model_name in names(model_list)) {
   }else if(grepl("gam5", model_name)){
     HomePred <- fit_func(model_formulaGAMH5, data = dat25)
     AwayPred <- fit_func(model_formulaGAMA5, data = dat25)
+  }else if(grepl("gam6", model_name)){
+    HomePred <- fit_func(model_formulaGAMH6, data = dat25)
+    AwayPred <- fit_func(model_formulaGAMA6, data = dat25)
+  }else if(grepl("gam7", model_name)){
+    HomePred <- fit_func(model_formulaGAMH7, data = dat25)
+    AwayPred <- fit_func(model_formulaGAMA7, data = dat25)
   }else{
     HomePred <- fit_func(model_formulaH, data = dat25)
     AwayPred <- fit_func(model_formulaA, data = dat25)
