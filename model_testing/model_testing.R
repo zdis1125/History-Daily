@@ -76,29 +76,29 @@ keep_away <- complete.cases(train_x, away_y)
 model_list <- list(
   Linear_Regression = function(f, data) lm(f, data = data),
   #Random Forests
-  Random_Forest1     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
-  Random_Forest2     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 3),
-  Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
-  Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
+  #Random_Forest1     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
+  #Random_Forest2     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 3),
+  #Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
+  #Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
   #Support Vectors
   #epsilon testing
-  svm1     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = 1),
-  svm2     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .5),
-  svm3    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-  svm4    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .01),
-  svm5    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .001),
+  #svm1     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = 1),
+  #svm2     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .5),
+  #svm3    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  #svm4    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .01),
+  #svm5    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .001),
   #Cost Testing
-  svm6    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =1, epsilon = .1),
-  svm7    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-  svm8    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 1, gamma =1, epsilon = .1),
-  svm9    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .1, gamma =1, epsilon = .1),
-  svm10    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .01, gamma =1, epsilon = .1),
+  #svm6    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =1, epsilon = .1),
+  #svm7    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  #svm8    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 1, gamma =1, epsilon = .1),
+  #svm9    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .1, gamma =1, epsilon = .1),
+  #svm10    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .01, gamma =1, epsilon = .1),
   #Gamma testing
-  svm11    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =100, epsilon = .1),
-  svm12    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =10, epsilon = .1),
-  svm13    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-  svm14    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.1, epsilon = .1),
-  svm15    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.01, epsilon = .1),
+  #svm11    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =100, epsilon = .1),
+  #svm12    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =10, epsilon = .1),
+  #svm13    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  #svm14    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.1, epsilon = .1),
+  #svm15    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.01, epsilon = .1),
   #GBM
   #ntrees testing
   gbm1 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.01),
