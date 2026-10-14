@@ -101,31 +101,31 @@ model_list <- list(
   #svm15    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.01, epsilon = .1),
   #GBM
   #ntrees testing
-  gbm1 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.01),
-  gbm2 = function(f,data) gbm(f,data = data, n.trees= 20000,interaction.depth = 1, shrinkage = 0.01),
-  gbm3 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
-  gbm4 = function(f,data) gbm(f,data = data, n.trees= 5000,interaction.depth = 1, shrinkage = 0.01),
-  gbm5 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 1, shrinkage = 0.01),
-  gbm6 = function(f,data) gbm(f,data = data, n.trees= 500,interaction.depth = 1, shrinkage = 0.01),
-  gbm7 = function(f,data) gbm(f,data = data, n.trees= 100,interaction.depth = 1, shrinkage = 0.01),
+  gbm1 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  gbm2 = function(f,data) gbm(f,data = data, n.trees= 20000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  gbm3 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  gbm4 = function(f,data) gbm(f,data = data, n.trees= 5000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  gbm5 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  gbm6 = function(f,data) gbm(f,data = data, n.trees= 500,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  gbm7 = function(f,data) gbm(f,data = data, n.trees= 100,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
   #int depth testing
-  gbm8 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 10, shrinkage = 0.01),
-  gbm9 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.01),
-  gbm10 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 3, shrinkage = 0.01),
-  gbm11 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
+  gbm8 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 10, shrinkage = 0.01,distribution = "gaussian"),
+  gbm9 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.01,distribution = "gaussian"),
+  gbm10 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 3, shrinkage = 0.01,distribution = "gaussian"),
+  gbm11 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
   #shrinkage testing
-  gbm12 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.5),
-  gbm13 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.1),
-  gbm14 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.05),
-  gbm15 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01),
-  gbm16 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.001),
+  gbm12 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.5,distribution = "gaussian"),
+  gbm13 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.1,distribution = "gaussian"),
+  gbm14 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.05,distribution = "gaussian"),
+  gbm15 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  gbm16 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.001,distribution = "gaussian"),
   #combination testing
   #High Trees, Super slow, and shallow
-  gbm17 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.001),
+  gbm17 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.001,distribution = "gaussian"),
   #Low Trees, Quick, and deep
-  gbm18 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 5, shrinkage = 0.5),
+  gbm18 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 5, shrinkage = 0.5,distribution = "gaussian"),
   #Normal Trees, Quick, and Shallow
-  gbm19 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.5),
+  gbm19 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 5, shrinkage = 0.5,distribution = "gaussian"),
   #GLMs
   #glm_Gam_log = function(f, data) glm(f, data = data, family = Gamma(link = "log")),
   #glm_Gam_ident = function(f, data) glm(f, data = data, family = Gamma(link = "identity")),
