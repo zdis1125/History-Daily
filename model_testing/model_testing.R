@@ -75,33 +75,33 @@ keep_away <- complete.cases(train_x, away_y)
 model_list <- list(
   Linear_Regression = function(f, data) lm(f, data = data),
   #Random Forests
-  #Random_Forest1     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
-  #Random_Forest2     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 3),
-  #Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
-  #Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
+  Random_Forest1     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
+  Random_Forest2     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 3),
+  Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
+  Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
   #Support Vectors
   #epsilon testing
-  #svm1     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = 1),
-  #svm2     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .5),
-  #svm3    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-  #svm4    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .01),
-  #svm5    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .001),
+  svm1     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = 1),
+  svm2     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .5),
+  svm3    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  svm4    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .01),
+  svm5    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .001),
   #Cost Testing
-  #svm6    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =1, epsilon = .1),
-  #svm7    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-  #svm8    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 1, gamma =1, epsilon = .1),
-  #svm9    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .1, gamma =1, epsilon = .1),
-  #svm10    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .01, gamma =1, epsilon = .1),
+  svm6    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =1, epsilon = .1),
+  svm7    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  svm8    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 1, gamma =1, epsilon = .1),
+  svm9    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .1, gamma =1, epsilon = .1),
+  svm10    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = .01, gamma =1, epsilon = .1),
   #Gamma testing
-  #svm11    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =100, epsilon = .1),
-  #svm12    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =10, epsilon = .1),
-  #svm13    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-  #svm14    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.1, epsilon = .1),
-  #svm15    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.01, epsilon = .1),
+  svm11    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =100, epsilon = .1),
+  svm12    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =10, epsilon = .1),
+  svm13    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  svm14    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.1, epsilon = .1),
+  svm15    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =.01, epsilon = .1),
   #GBM
   #ntrees testing
-  #gbm1 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
-  #gbm2 = function(f,data) gbm(f,data = data, n.trees= 20000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  gbm1 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  gbm2 = function(f,data) gbm(f,data = data, n.trees= 20000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
   gbm3 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
   gbm4 = function(f,data) gbm(f,data = data, n.trees= 5000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
   gbm5 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
@@ -169,7 +169,6 @@ for (model_name in names(model_list)) {
     HomePred <- fit_func(model_formulaGAMH7, data = dat25)
     AwayPred <- fit_func(model_formulaGAMA7, data = dat25)
   }else{
-    message("Running: else")
     HomePred <- fit_func(model_formulaH, data = dat25)
     AwayPred <- fit_func(model_formulaA, data = dat25)
     TotPred <- fit_func(model_formulaTot, data = dat25)
@@ -190,7 +189,6 @@ for (model_name in names(model_list)) {
     # Check if the current model in the loop is a GBM
     if(grepl("gbm", model_name)) {
       # gbm requires n.trees for prediction
-      message(paste0("tree num: ",HomePred$n.trees))
       GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, ], n.trees = HomePred$n.trees, type = "response"), 1)
       GamesHist$PredAway[NonNA] <- round(predict(AwayPred, newdata = GamesHist[NonNA, ], n.trees = AwayPred$n.trees, type = "response"), 1)
     } else if(grepl("svm", model_name)) {
