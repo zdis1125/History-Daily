@@ -190,6 +190,7 @@ for (model_name in names(model_list)) {
     # Check if the current model in the loop is a GBM
     if(grepl("gbm", model_name)) {
       # gbm requires n.trees for prediction
+      message(paste0("tree num: ",HomePred$n.trees))
       GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, ], n.trees = HomePred$n.trees, type = "response"), 1)
       GamesHist$PredAway[NonNA] <- round(predict(AwayPred, newdata = GamesHist[NonNA, ], n.trees = AwayPred$n.trees, type = "response"), 1)
     } else if(grepl("svm", model_name)) {
