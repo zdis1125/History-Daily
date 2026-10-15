@@ -1,6 +1,6 @@
 library(randomForest)
 library(e1071)
-library(gbm3)
+library(gbm)
 library(mgcv)
 
 set.seed(10)
@@ -38,7 +38,6 @@ model_formulaA = score ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 model_formulaH = score.1 ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 model_formulaSpr = (score.1-score) ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 model_formulaTot = (score.1+score) ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
-
 
 model_formulaGAMH1 = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)
 model_formulaGAMA1 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)
@@ -170,6 +169,7 @@ for (model_name in names(model_list)) {
     HomePred <- fit_func(model_formulaGAMH7, data = dat25)
     AwayPred <- fit_func(model_formulaGAMA7, data = dat25)
   }else{
+    message("Running: else")
     HomePred <- fit_func(model_formulaH, data = dat25)
     AwayPred <- fit_func(model_formulaA, data = dat25)
     TotPred <- fit_func(model_formulaTot, data = dat25)
