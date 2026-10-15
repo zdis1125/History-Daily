@@ -54,11 +54,11 @@ model_formulaGAMA4 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(Adj
 model_formulaGAMH5 = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjO.H, AdjD.H) + ti(AdjO.A, AdjD.A) 
 model_formulaGAMA5 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjO.H, AdjD.H) + ti(AdjO.A, AdjD.A)
 
-model_formulaGAMH6 = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjT.H, AdjT.H)
-model_formulaGAMA6 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjT.H, AdjT.H)
+model_formulaGAMH6 = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjT.H, AdjT.A)
+model_formulaGAMA6 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjT.H, AdjT.A)
 
-model_formulaGAMH7 = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A) + ti(AdjT.H, AdjT.H) + ti(AdjO.H, AdjD.H) + ti(AdjO.A, AdjD.A) + ti(AdjO.H, AdjT.H) + ti(AdjO.A, AdjT.A) + ti(AdjD.H, AdjT.H) + ti(AdjD.A, AdjT.A)  
-model_formulaGAMA7 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjT.H, AdjT.H) + ti(AdjO.H, AdjD.H) + ti(AdjO.A, AdjD.A) + ti(AdjO.H, AdjT.H) + ti(AdjO.A, AdjT.A) + ti(AdjD.H, AdjT.H) + ti(AdjD.A, AdjT.A)  
+model_formulaGAMH7 = score ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A) + ti(AdjT.H, AdjT.A) + ti(AdjO.H, AdjD.H) + ti(AdjO.A, AdjD.A) + ti(AdjO.H, AdjT.H) + ti(AdjO.A, AdjT.A) + ti(AdjD.H, AdjT.H) + ti(AdjD.A, AdjT.A)  
+model_formulaGAMA7 = score.1 ~ s(AdjO.H) +s(AdjD.A) +s(AdjT.H) +s(AdjO.A) +s(AdjD.H) + s(AdjT.A)+ ti(AdjT.H, AdjT.A) + ti(AdjO.H, AdjD.H) + ti(AdjO.A, AdjD.A) + ti(AdjO.H, AdjT.H) + ti(AdjO.A, AdjT.A) + ti(AdjD.H, AdjT.H) + ti(AdjD.A, AdjT.A)  
 
 features <- c("AdjD.A", "AdjO.H", "AdjT.A",
               "AdjT.H", "AdjO.A", "AdjD.H")
