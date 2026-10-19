@@ -75,17 +75,17 @@ keep_away <- complete.cases(train_x, away_y)
 model_list <- list(
   Linear_Regression = function(f, data) lm(f, data = data),
   #Random Forests
-  #Random_Forest1     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
-  #Random_Forest2     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 3),
-  #Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
-  #Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
+  Random_Forest1     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 3),
+  Random_Forest2     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 3),
+  Random_Forest3     = function(f, data) randomForest(f, data = data, ntree = 500, mtry = 2),
+  Random_Forest4     = function(f, data) randomForest(f, data = data, ntree = 100, mtry = 2),
   #Support Vectors
   #epsilon testing
-  #svm1     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = 1),
-  #svm2     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .5),
-  #svm3    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
-  #svm4    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .01),
-  #svm5    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .001),
+  svm1     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = 1),
+  svm2     = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .5),
+  svm3    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
+  svm4    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .01),
+  svm5    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .001),
   #Cost Testing
   #svm6    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 100, gamma =1, epsilon = .1),
   #svm7    = function(x,y) svm(x, y, type = "eps-regression",kernel = "radial", cost = 10, gamma =1, epsilon = .1),
@@ -101,9 +101,9 @@ model_list <- list(
   #GBM
   #ntrees testing
   #gbm1 = function(f,data) gbm(f,data = data, n.trees= 50000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
-  #gbm2 = function(f,data) gbm(f,data = data, n.trees= 20000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  gbm2 = function(f,data) gbm(f,data = data, n.trees= 20000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
   #gbm3 = function(f,data) gbm(f,data = data, n.trees= 10000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
-  #gbm4 = function(f,data) gbm(f,data = data, n.trees= 5000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
+  gbm4 = function(f,data) gbm(f,data = data, n.trees= 5000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
   #gbm5 = function(f,data) gbm(f,data = data, n.trees= 1000,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
   #gbm6 = function(f,data) gbm(f,data = data, n.trees= 500,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
   gbm7 = function(f,data) gbm(f,data = data, n.trees= 100,interaction.depth = 1, shrinkage = 0.01,distribution = "gaussian"),
@@ -130,13 +130,13 @@ model_list <- list(
   #glm_Gam_ident = function(f, data) glm(f, data = data, family = Gamma(link = "identity")),
   #glm_Gau_log = function(f, data) glm(f, data = data, family = gaussian(link = "log"))
   #GAMs
-  #gam1 = function(f,data) gam(f, data = data),
+  gam1 = function(f,data) gam(f, data = data),
   #gam2 = function(f,data) gam(f, data = data),
   #gam3 = function(f,data) gam(f, data = data),
   gam4 = function(f,data) gam(f, data = data),
   #gam5 = function(f,data) gam(f, data = data),
   gam6 = function(f,data) gam(f, data = data)
-  #gam7 = function(f,data) gam(f, data = data)
+  gam7 = function(f,data) gam(f, data = data)
 )
 
 model_results <- data.frame()
@@ -338,7 +338,7 @@ for (model_name in names(model_list)) {
       
       # Preserve your original fund-value scale
       # +10 per win, -11 per loss, 0 per push
-      fundval[k, j] <- 10 * wins - 11 * losses
+      fundval[k, j] <- 10 * wins - 12 * losses
     }
   }
   max_fund <- max(fundval, na.rm = TRUE)
@@ -361,7 +361,9 @@ for (model_name in names(model_list)) {
       NumberOfPlays =  NumPlays[locations],
       homeExcta,
       awayExcta,
-      PureExacta
+      PureExacta,
+      ROI = max_fund / NumPlays[locations],
+      HitRate = HitRate[locations]
     )
   )
   # Save grids for this specific model
