@@ -135,7 +135,7 @@ model_list <- list(
   #gam3 = function(f,data) gam(f, data = data),
   gam4 = function(f,data) gam(f, data = data),
   #gam5 = function(f,data) gam(f, data = data),
-  gam6 = function(f,data) gam(f, data = data)
+  gam6 = function(f,data) gam(f, data = data),
   gam7 = function(f,data) gam(f, data = data)
 )
 
