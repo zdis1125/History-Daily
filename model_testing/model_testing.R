@@ -346,7 +346,7 @@ for (model_name in names(model_list)) {
   # Keep all coordinates if multiple threshold pairs tie for the maximum
   locations <- which(fundval == max_fund, arr.ind = TRUE)
   
-  numplay <- NumPlays[locations[,"row"],locations[,"col"]]
+  #numplay <- NumPlays[locations[,"row"],locations[,"col"]]
   
   model_results <- rbind(
     model_results,
@@ -358,7 +358,7 @@ for (model_name in names(model_list)) {
       Column = locations[, "col"],
       SpreadThreshold = locations[, "row"] / 10,
       TotalThreshold = locations[, "col"] / 10,
-      NumberOfPlays = numplay,
+      NumberOfPlays =  NumPlays[locations[,"row"],locations[,"col"]],
       homeExcta,
       awayExcta,
       PureExacta
