@@ -338,7 +338,7 @@ for (model_name in names(model_list)) {
       
       # Preserve your original fund-value scale
       # +10 per win, -11 per loss, 0 per push
-      fundval[k, j] <- 10 * wins - 12 * losses
+      fundval[k, j] <- 10 * wins - 11 * losses
     }
   }
   max_fund <- max(fundval, na.rm = TRUE)
