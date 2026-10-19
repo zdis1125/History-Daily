@@ -358,7 +358,7 @@ for (model_name in names(model_list)) {
       Column = locations[, "col"],
       SpreadThreshold = locations[, "row"] / 10,
       TotalThreshold = locations[, "col"] / 10,
-      NumberOfPlays =  NumPlays[locations[,"row"],locations[,"col"]],
+      NumberOfPlays =  NumPlays[locations],
       homeExcta,
       awayExcta,
       PureExacta
