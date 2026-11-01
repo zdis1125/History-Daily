@@ -2,7 +2,8 @@ name: Daily RDS Update
 
 on:
  schedule:
- - cron: '0 12 * * *'
+ - cron: '30 12 * * *'
+   timezone: 'America/New_York'
  #workflow_dispatch:
 
 jobs:
