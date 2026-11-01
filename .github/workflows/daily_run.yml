@@ -4,7 +4,7 @@ on:
  schedule:
  - cron: '20 12 * * *'
    timezone: 'America/New_York'
- #workflow_dispatch:
+ workflow_dispatch:
 
 jobs:
   autoscrape:
