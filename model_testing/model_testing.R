@@ -215,6 +215,7 @@ for (model_name in names(model_list)) {
       GamesHist$PredSpr[NonNA] <- round(predict(SprPred, newdata = GamesHist[NonNA, ], type = "response"), 1)
       GamesHist$PredTot[NonNA] <- round(predict(TotPred, newdata = GamesHist[NonNA, ], type = "response"), 1)
     }
+
     
     #GamesHist$PredHome[NonNA] <- round(predict(HomePred, newdata = GamesHist[NonNA, ], type = "response"), 1)
     #GamesHist$PredAway[NonNA] <- round(predict(AwayPred, newdata = GamesHist[NonNA, ], type = "response"), 1)
@@ -223,7 +224,9 @@ for (model_name in names(model_list)) {
   }
   
   AllGameandPred <- PredScore(AllGames)
-  
+
+  #for new data just run predscore with 26-27 dataset
+    
   # Filter out games without predictions
   # Keep games with both predictions and both final scores
   AllGameandPred2 <- AllGameandPred[
