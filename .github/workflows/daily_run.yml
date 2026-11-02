@@ -74,7 +74,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add *_Grid.csv
+          git add *_Grid.rds
           #git add model_testing/model_results.csv
           #git add HistScoresGitCSV.csv
           git add HistScoresGit.rds
