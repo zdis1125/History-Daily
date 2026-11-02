@@ -2,8 +2,7 @@ name: Daily RDS Update
 
 on:
  schedule:
- - cron: '0 01 * * *'
-   timezone: 'America/New_York'
+ - cron: '0 08 * * *'
  workflow_dispatch:
 
 jobs:
@@ -67,6 +66,7 @@ jobs:
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: Rscript run_daily.R
+             Rscript model_testing/model_testing.R
         #run_daily.R and remove working directory
         #model_testing/model_testing.R
 
