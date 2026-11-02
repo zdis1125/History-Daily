@@ -362,6 +362,8 @@ AllGames <- GamesTrack(HomeTot,HomeSpr)
 
 #for regular games:
 saveRDS(AllGames, "HistScoresGit.rds")
+write.csv(AllGames,"HistScoresGitCSV.csv")
+
 #saveRDS(AllGames, "NCHistScoresGit.rds")
 
 #this is our actual model predictions now, after we have saved our file, remember git is only used to create the big matrix, actual predictions happen in our app
