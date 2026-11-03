@@ -1,4 +1,4 @@
-print("Running MCsim")
+message("Running MCsim")
 # =============================================================================
 # ESPN NCAA Men's Basketball – Full Season Scraper  (v5)
 #
