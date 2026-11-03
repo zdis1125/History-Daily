@@ -558,7 +558,8 @@ saveRDS(as.data.frame(fundval), "FundVal_Grid.rds")
 
 saveRDS(as.data.frame(NumPlays), "NumPlays_Grid.rds")
 
-
+print("Done building Grids")
+  
 #remove the following three and uncomment the above three for regular games:
 
 #saveRDS(as.data.frame(HitRate), "NCHitRate_Grid.rds")
