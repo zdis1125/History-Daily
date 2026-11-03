@@ -423,7 +423,7 @@ scrape_season <- function(start_date  = SEASON_START,
 #
 # 3. Full season:
       df6 <- scrape_season()
-      write.csv(df6,"MC/UpdatedGamesCSV.csv")
+      write.csv(df6,"UpdatedGamesCSV.csv")
 #
 # =============================================================================
 # OUTPUT COLUMNS
