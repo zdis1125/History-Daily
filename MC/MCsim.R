@@ -23,7 +23,7 @@ SEASON_YEAR   <- 2027                                 # change each season
 SEASON_START  <- as.Date(paste0(SEASON_YEAR - 1, "-11-01"))
 SEASON_END    <- as.Date(format(Sys.Date(), "%Y-%m-%d"))
 PAUSE_GET     <- 0.05
-OUTPUT_FILE   <- paste0("ncaab_", (SEASON_YEAR-1),"-",SEASON_YEAR, "_games.csv")
+OUTPUT_FILE   <- paste0("ncaab_", (SEASON_YEAR-1),"-",SEASON_YEAR, "_games.")
 
 setwd("C:/Users/zdis1/OneDrive - University of Connecticut/CBB/MC")
 
@@ -399,7 +399,7 @@ scrape_season <- function(start_date  = SEASON_START,
   ))
   result <- mutate(result, across(all_of(num_cols), ~ suppressWarnings(as.numeric(.x))))
   
-  write.csv(result, output_file, row.names = FALSE)
+  #write.csv(result, output_file, row.names = FALSE)
   message(sprintf("\nDone. %d rows → '%s'.  %d summary errors.",
                   nrow(result), output_file, length(errors)))
   invisible(result)
