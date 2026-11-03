@@ -26,7 +26,7 @@ SEASON_END    <- as.Date(format(Sys.Date(), "%Y-%m-%d"))
 PAUSE_GET     <- 0.05
 OUTPUT_FILE   <- paste0("ncaab_", (SEASON_YEAR-1),"-",SEASON_YEAR, "_games.")
 
-setwd("C:/Users/zdis1/OneDrive - University of Connecticut/CBB/MC")
+#setwd("C:/Users/zdis1/OneDrive - University of Connecticut/CBB/MC")
 
 BASE_SCOREBOARD <- "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard"
 BASE_SUMMARY    <- "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/summary"
