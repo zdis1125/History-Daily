@@ -81,6 +81,8 @@ jobs:
           git add HistScoresGitCSV.csv
           git add HistScoresGit.rds
           git add MC/UpdatedGamesCSV.csv
+          git add HistScoresGit26-27.rds
+          git add HistScoresGitCSV26-27.csv
           git commit -m "Daily data update" || echo "No changes to commit"
           git pull --rebase origin main
           git push
