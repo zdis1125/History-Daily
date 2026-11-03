@@ -364,6 +364,8 @@ AllGames <- GamesTrack(HomeTot,HomeSpr)
 #for regular games:
 saveRDS(AllGames, "HistScoresGit.rds")
 write.csv(AllGames,"HistScoresGitCSV.csv")
+saveRDS(AllGames, "HistScoresGit26-27.rds")
+write.csv(AllGames,"HistScoresGitCSV26-27.csv")
 
 #saveRDS(AllGames, "NCHistScoresGit.rds")
 
