@@ -1,5 +1,5 @@
 source("R/match-function.R")
-print("Running daily run")
+message("Running daily run")
 library(rvest)
 library(stringr)
 library(dplyr)
@@ -558,7 +558,7 @@ saveRDS(as.data.frame(fundval), "FundVal_Grid.rds")
 
 saveRDS(as.data.frame(NumPlays), "NumPlays_Grid.rds")
 
-print("Done building Grids")
+message("Done building Grids")
   
 #remove the following three and uncomment the above three for regular games:
 
