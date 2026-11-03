@@ -1,4 +1,5 @@
 source("R/match-function.R")
+print("Running daily run")
 library(rvest)
 library(stringr)
 library(dplyr)
@@ -453,7 +454,7 @@ AllGameandPred2 <- AllGameandPred[-which(is.na(AllGameandPred$PredAway) == TRUE)
 AllGameandPred2$MySpread <- AllGameandPred2$PredAway - AllGameandPred2$PredHome
 AllGameandPred2$MyTot <- AllGameandPred2$PredHome + AllGameandPred2$PredAway
 
-
+print("Building Grids")
 HitRate <- matrix(ncol = 125,nrow = 80)
 NumPlays <- matrix(ncol = 125,nrow = 80)
 ID <- matrix(ncol = 125,nrow = 80)
