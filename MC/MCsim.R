@@ -21,8 +21,8 @@ library(tibble)
 SEASON_YEAR   <- 2027                                 # change each season
 #SEASON_YEAR2 <- 2026
 SEASON_START  <- as.Date(paste0(SEASON_YEAR - 1, "-11-01"))
-SEASON_END    <- as.Date(paste0(SEASON_YEAR-1,     "-11-02"))
-PAUSE_GET     <- 0.35
+SEASON_END    <- as.Date(format(Sys.Date(), "%Y-%m-%d"))
+PAUSE_GET     <- 0.05
 OUTPUT_FILE   <- paste0("ncaab_", (SEASON_YEAR-1),"-",SEASON_YEAR, "_games.csv")
 
 setwd("C:/Users/zdis1/OneDrive - University of Connecticut/CBB/MC")
