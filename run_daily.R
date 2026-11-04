@@ -364,8 +364,10 @@ AllGames <- GamesTrack(HomeTot,HomeSpr)
 #for regular games:
 saveRDS(AllGames, "HistScoresGit.rds")
 write.csv(AllGames,"HistScoresGitCSV.csv")
-saveRDS(AllGames, "HistScoresGit26-27.rds")
-write.csv(AllGames,"HistScoresGitCSV26-27.csv")
+
+AllGames2627 <- AllGames[which(AllGames$date >= as.Date("2026-10-31")),]
+saveRDS(AllGames2627, "HistScoresGit26-27.rds")
+write.csv(AllGames2627,"HistScoresGitCSV26-27.csv")
 
 #saveRDS(AllGames, "NCHistScoresGit.rds")
 
