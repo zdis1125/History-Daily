@@ -21,6 +21,9 @@ dat25$AdjD.H <- as.numeric(dat25$AdjD.H)
 Scores_file <- "HistScoresGit.rds"
 AllGames <- readRDS(Scores_file)
 
+Scores_file2627 <- "HistScoresGit26-27.rds"
+AllGames2627 <- readRDS(Scores_file2627)
+
 # Convert prediction variables to numeric so they match the dat25 fit
 AllGames$AdjO.A <- as.numeric(AllGames$AdjO.A)
 AllGames$AdjD.A <- as.numeric(AllGames$AdjD.A)
@@ -34,6 +37,23 @@ AllGames$Score.H <- as.numeric(AllGames$Score.H)
 AllGames$Score.A <- as.numeric(AllGames$Score.A)
 AllGames$home_spread <- as.numeric(AllGames$home_spread)
 AllGames$home_total <- as.numeric(AllGames$home_total)
+
+##Repeat for AllGames2627
+# Convert prediction variables to numeric so they match the dat25 fit
+AllGames2627$AdjO.A <- as.numeric(AllGames2627$AdjO.A)
+AllGames2627$AdjD.A <- as.numeric(AllGames2627$AdjD.A)
+AllGames2627$AdjT.A <- as.numeric(AllGames2627$AdjT.A)
+AllGames2627$AdjO.H <- as.numeric(AllGames2627$AdjO.H)
+AllGames2627$AdjD.H <- as.numeric(AllGames2627$AdjD.H)
+AllGames2627$AdjT.H <- as.numeric(AllGames2627$AdjT.H)
+
+# Convert scores and Vegas lines to numeric for the accuracy loop
+AllGames2627$Score.H <- as.numeric(AllGames2627$Score.H)
+AllGames2627$Score.A <- as.numeric(AllGames2627$Score.A)
+AllGames2627$home_spread <- as.numeric(AllGames2627$home_spread)
+AllGames2627$home_total <- as.numeric(AllGames2627$home_total)
+
+
 
 model_formulaA = score ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
 model_formulaH = score.1 ~ AdjD.A + AdjO.H + AdjT.A + AdjT.H  + AdjO.A + AdjD.H
@@ -226,6 +246,8 @@ for (model_name in names(model_list)) {
   
   AllGameandPred <- PredScore(AllGames)
 
+  AllGameandPred2627 <- PredScore(AllGames2627)
+    
   #for new data just run predscore with 26-27 dataset
     
   # Filter out games without predictions
@@ -384,6 +406,171 @@ for (model_name in names(model_list)) {
       HitRate = HitRate[locations]
     )
   )
+
+#####
+###Repeat this ALL for 26-27, i should make this a function
+#####
+  
+AllGameandPred2 <- AllGameandPred2627[
+    complete.cases(
+      AllGameandPred2627[, c("PredHome", "PredAway", "Score.H", "Score.A")]
+    ),
+    , drop = FALSE
+  ]
+  
+  AllGameandPred2$MySpread <- round(
+    AllGameandPred2$PredAway - AllGameandPred2$PredHome, 1
+  )
+  
+  AllGameandPred2$MyTot <- round(
+    AllGameandPred2$PredHome + AllGameandPred2$PredAway, 1
+  )
+  
+  # Positive spread edge = Home; negative = Away
+  AllGameandPred2$SpreadEdge <- round(
+    AllGameandPred2$home_spread - AllGameandPred2$MySpread, 1
+  )
+  
+  #SpreadEdge2 is using the direct spread calc
+  #AllGameandPred2$SpreadEdge2 <- round(
+  #AllGameandPred2$home_spread - AllGameandPred2$PredSpr, 1
+  #)
+  
+  AllGameandPred2$SpreadDiscrep <- abs(AllGameandPred2$SpreadEdge)
+  
+  #AllGameandPred2$SpreadDiscrep2 <-abs(AllGameandPred2$SpreadEdge2)
+  
+  # Positive total edge = Over; negative = Under
+  AllGameandPred2$TotalEdge <- round(
+    AllGameandPred2$MyTot - AllGameandPred2$home_total, 1
+  )
+  
+  # Positive margins mean Home covered / total went Over
+  spread_margin <- AllGameandPred2$Score.H +
+    AllGameandPred2$home_spread - AllGameandPred2$Score.A
+  
+  total_margin <- AllGameandPred2$Score.H +
+    AllGameandPred2$Score.A - AllGameandPred2$home_total
+  
+  # Grade the margin from the selected side's perspective
+  grade_pick <- function(selected, margin) {
+    result <- rep(NA_character_, length(margin))
+    valid <- selected & is.finite(margin)
+    
+    result[valid] <- ifelse(
+      abs(margin[valid]) < 1e-8,
+      "Push",
+      ifelse(margin[valid] >= 0, "Hit", "Miss")
+    )
+    
+    result
+  }
+  
+  ##exact score predictions
+  awayExcta <- length(which(round(AllGameandPred2$PredAway,0) == round(AllGameandPred2$Score.A,0)))
+  homeExcta <- length(which(round(AllGameandPred2$PredHome,0) == round(AllGameandPred2$Score.H,0)))
+  PureExacta <- length(which(round(AllGameandPred2$PredAway,0) == round(AllGameandPred2$Score.A,0) & round(AllGameandPred2$PredHome,0) == round(AllGameandPred2$Score.H,0)))
+  
+  HitRate <- matrix(NA_real_, nrow = 80, ncol = 125)
+  NumPlays <- matrix(0, nrow = 80, ncol = 125)
+  ID <- matrix(0, nrow = 80, ncol = 125)
+  fundval <- matrix(0, nrow = 80, ncol = 125)
+  
+  for (k in 1:80) {
+    sprmeasure <- k / 10
+    
+    # Strictly greater than the spread threshold
+    spread_selected <- is.finite(AllGameandPred2$SpreadEdge) &
+      AllGameandPred2$SpreadDiscrep >= sprmeasure
+    
+    AllGameandPred2$SpreadPlay <- ifelse(
+      spread_selected,
+      ifelse(AllGameandPred2$SpreadEdge >= 0,
+             "Home Spread", "Away Spread"),
+      "No"
+    )
+    
+    # Multiply by the edge's sign to grade the chosen side
+    AllGameandPred2$SpreadAcc <- grade_pick(
+      spread_selected,
+      spread_margin * sign(AllGameandPred2$SpreadEdge)
+    )
+    
+    SprHit <- sum(AllGameandPred2$SpreadAcc == "Hit", na.rm = TRUE)
+    SprMiss <- sum(AllGameandPred2$SpreadAcc == "Miss", na.rm = TRUE)
+    
+    for (j in 1:125) {
+      totmeasure <- j / 10
+      
+      # Strictly greater than the total threshold
+      total_selected <- is.finite(AllGameandPred2$TotalEdge) &
+        abs(AllGameandPred2$TotalEdge) >= totmeasure
+      
+      AllGameandPred2$TotalPlay <- ifelse(
+        total_selected,
+        ifelse(AllGameandPred2$TotalEdge >= 0, "Over", "Under"),
+        "No"
+      )
+      
+      AllGameandPred2$TotalAcc <- grade_pick(
+        total_selected,
+        total_margin * sign(AllGameandPred2$TotalEdge)
+      )
+      
+      TotHit <- sum(AllGameandPred2$TotalAcc == "Hit", na.rm = TRUE)
+      TotMiss <- sum(AllGameandPred2$TotalAcc == "Miss", na.rm = TRUE)
+      
+      wins <- SprHit + TotHit
+      losses <- SprMiss + TotMiss
+      
+      # Preserve your original definition: wins + losses
+      # Pushes are excluded from play count and hit rate
+      NumPlays[k, j] <- wins + losses
+      
+      HitRate[k, j] <- if (wins + losses > 0) {
+        wins / (wins + losses)
+      } else {
+        NA_real_
+      }
+      
+      ID[k, j] <- k + j
+      
+      # Preserve your original fund-value scale
+      # +10 per win, -11 per loss, 0 per push
+      fundval[k, j] <- 10 * wins - 11 * losses
+    }
+  }
+  max_fund <- max(fundval, na.rm = TRUE)
+  
+  # Keep all coordinates if multiple threshold pairs tie for the maximum
+  locations <- which(fundval == max_fund, arr.ind = TRUE)
+  
+  #numplay <- NumPlays[locations[,"row"],locations[,"col"]]
+  
+  model_results2627 <- rbind(
+    model_results2627,
+    data.frame(
+      Model = model_name,
+      MaxFundValue = max_fund,
+      NetUnits = max_fund / 10,
+      Row = locations[, "row"],
+      Column = locations[, "col"],
+      SpreadThreshold = locations[, "row"] / 10,
+      TotalThreshold = locations[, "col"] / 10,
+      NumberOfPlays =  NumPlays[locations],
+      homeExcta,
+      awayExcta,
+      PureExacta,
+      ROI = max_fund / NumPlays[locations],
+      HitRate = HitRate[locations]
+    )
+  )
+
+
+###END OF REPEAT
+
+
+  
   # Save grids for this specific model
   #saveRDS(as.data.frame(HitRate), paste0("model_testing/",model_name, "_HitRate_Grid.rds"))
   #saveRDS(as.data.frame(fundval), paste0("model_testing/",model_name, "_FundVal_Grid.rds"))
@@ -399,8 +586,14 @@ model_results <- model_results[
   order(model_results$MaxFundValue, decreasing = TRUE),
 ]
 
+model_results2627 <- model_results2627[
+  order(model_results2627$MaxFundValue, decreasing = TRUE),
+]
+
 rownames(model_results) <- NULL
+rownames(model_results2627) <- NULL
 
 write.csv(model_results, "model_testing/model_results.csv", row.names = FALSE)
+write.csv(model_results2627, "model_testing/model_results2627.csv", row.names = FALSE)
 write.csv(AllGames, "HistScoresGitCSV.csv",row.names = FALSE)
 #View(model_results)
