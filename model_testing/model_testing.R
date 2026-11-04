@@ -169,6 +169,7 @@ model_list <- list(
 )
 
 model_results <- data.frame()
+model_results2627 <- data.frame()
 
 for (model_name in names(model_list)) {
   #message(paste0("Running: ",model_name))
