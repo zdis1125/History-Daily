@@ -171,8 +171,9 @@ model_list <- list(
 model_results <- data.frame()
 model_results2627 <- data.frame()
 
+message("running old")
 for (model_name in names(model_list)) {
-  #message(paste0("Running: ",model_name))
+  message(paste0("Running: ",model_name))
   fit_func <- model_list[[model_name]]
   if(grepl("svm", model_name)){
     HomePred <- fit_func(x = train_x[keep_home, , drop = FALSE], y = home_y[keep_home])
@@ -411,7 +412,7 @@ for (model_name in names(model_list)) {
 #####
 ###Repeat this ALL for 26-27, i should make this a function
 #####
-  
+message("running 2627") 
 AllGameandPred2 <- AllGameandPred2627[
     complete.cases(
       AllGameandPred2627[, c("PredHome", "PredAway", "Score.H", "Score.A")]
