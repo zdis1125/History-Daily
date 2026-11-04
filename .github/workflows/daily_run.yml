@@ -67,8 +67,8 @@ jobs:
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: |
-          Rscript run_daily.R
-          #Rscript model_testing/model_testing.R
+          #Rscript run_daily.R
+          Rscript model_testing/model_testing.R
           #Rscript MC/MCsim.R
         #run_daily.R and remove working directory
         #model_testing/model_testing.R
@@ -79,7 +79,7 @@ jobs:
           git config --global user.email "action@github.com"
           git add *_Grid.rds
           git add model_testing/model_results.csv
-          #git add model_testing/model_results2627.csv
+          git add model_testing/model_results2627.csv
           git add HistScoresGitCSV.csv
           git add HistScoresGit.rds
           git add MC/UpdatedGamesCSV.csv
