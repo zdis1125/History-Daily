@@ -67,9 +67,9 @@ jobs:
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: |
-          #Rscript run_daily.R
+          Rscript run_daily.R
           Rscript model_testing/model_testing.R
-          #Rscript MC/MCsim.R
+          Rscript MC/MCsim.R
         #run_daily.R and remove working directory
         #model_testing/model_testing.R
 
