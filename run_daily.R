@@ -458,6 +458,8 @@ AllGameandPred2 <- AllGameandPred[-which(is.na(AllGameandPred$PredAway) == TRUE)
 AllGameandPred2$MySpread <- AllGameandPred2$PredAway - AllGameandPred2$PredHome
 AllGameandPred2$MyTot <- AllGameandPred2$PredHome + AllGameandPred2$PredAway
 
+write.csv(AllGameandPred2,"AllGamesandPredsCSV.csv")
+          
 print("Building Grids")
 HitRate <- matrix(ncol = 125,nrow = 80)
 NumPlays <- matrix(ncol = 125,nrow = 80)
