@@ -61,14 +61,29 @@ jobs:
       - name: DEBUG — library paths and rvest
         run: |
           Rscript -e 'cat("LIB PATHS:\n"); print(.libPaths()); cat("\nINSTALLED:\n"); print(installed.packages()[,1]); library(rvest)'
-          
-      - name: Run script
+
+      - name: Update daily data
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: |
-          Rscript run_daily.R
-          Rscript model_testing/model_testing.R
-          Rscript MC/MCsim.R
+        run: Rscript run_daily.R
+
+      - name: Run model testing
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: Rscript model_testing/model_testing.R
+
+      - name: Run Monte Carlo simulation
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: Rscript MC/MCsim.R
+        
+      #- name: Run script
+      #  env:
+      #    ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+      #  run: |
+      #    Rscript run_daily.R
+      #    Rscript model_testing/model_testing.R
+      #    Rscript MC/MCsim.R
         #run_daily.R and remove working directory
         #model_testing/model_testing.R
 
