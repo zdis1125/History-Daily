@@ -67,15 +67,15 @@ jobs:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: Rscript run_daily.R
 
-      - name: Run model testing
-        env:
-          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: Rscript model_testing/model_testing.R
+      #- name: Run model testing
+      #  env:
+      #    ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+      #  run: Rscript model_testing/model_testing.R
 
-      - name: Run Monte Carlo simulation
-        env:
-          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
-        run: Rscript MC/MCsim.R
+      #- name: Run Monte Carlo simulation
+      #  env:
+      #    ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+      #  run: Rscript MC/MCsim.R
         
       #- name: Run script
       #  env:
@@ -101,6 +101,7 @@ jobs:
           git add MC/UpdatedGamesCSV.csv
           git add HistScoresGit26-27.rds
           git add HistScoresGitCSV26-27.csv
+          git add AllGamesandPredsCSV.csv
           git commit -m "Daily data update" || echo "No changes to commit"
           git pull --rebase origin main
           git push
