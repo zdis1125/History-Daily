@@ -597,5 +597,9 @@ rownames(model_results2627) <- NULL
 
 write.csv(model_results, "model_testing/model_results.csv", row.names = FALSE)
 write.csv(model_results2627, "model_testing/model_results2627.csv", row.names = FALSE)
+
+write.csv(model_results, paste0("model_testing/model_testing_logs/",Sys.Date(),"_model_results.csv"), row.names = FALSE)
+write.csv(model_results2627, paste0("model_testing/model_testing_logs/",Sys.Date(),"_model_results2627.csv"), row.names = FALSE)
+
 write.csv(AllGames, "HistScoresGitCSV.csv",row.names = FALSE)
 #View(model_results)
