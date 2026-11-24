@@ -172,9 +172,13 @@ model_results <- data.frame()
 model_results2627 <- data.frame()
 
 message("running old")
+gbm7_fit_rng <- NULL
 for (model_name in names(model_list)) {
   #message(paste0("Running: ",model_name))
   fit_func <- model_list[[model_name]]
+  # Record, without advancing or resetting, the exact RNG state used for the
+  # gbm7 home and away fits. The Shiny app can then reproduce this backtest.
+  if (identical(model_name, "gbm7")) gbm7_fit_rng <- paste(.Random.seed, collapse = ";")
   if(grepl("svm", model_name)){
     HomePred <- fit_func(x = train_x[keep_home, , drop = FALSE], y = home_y[keep_home])
     AwayPred <- fit_func(x = train_x[keep_away, , drop = FALSE], y = away_y[keep_away])
@@ -595,6 +599,9 @@ model_results2627 <- model_results2627[
 rownames(model_results) <- NULL
 rownames(model_results2627) <- NULL
 
+if (!is.null(gbm7_fit_rng)) {
+  model_results2627$GBM7FitRNG <- ifelse(model_results2627$Model == "gbm7", gbm7_fit_rng, NA_character_)
+}
 write.csv(model_results, "model_testing/model_results.csv", row.names = FALSE)
 write.csv(model_results2627, "model_testing/model_results2627.csv", row.names = FALSE)
 
